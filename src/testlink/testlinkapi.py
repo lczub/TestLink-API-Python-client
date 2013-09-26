@@ -171,11 +171,11 @@ class TestlinkAPIClient(object):
         Gets value of a Custom Field with scope='design' for a given Test case  
         """
         argsAPI = {'devKey' : self.devKey,
-                'testcaseexternalid' : str(testcaseexternalid),
-                'version' : str(version),
-                'testprojectid' : str(testprojectid),
-                'customfieldname' : str(customfieldname),
-                'details' : str(details)}
+                   'testcaseexternalid' : str(testcaseexternalid),
+                   'version' : int(version),
+                   'testprojectid' : str(testprojectid),
+                   'customfieldname' : str(customfieldname),
+                   'details' : str(details)}
         return self._callServer('getTestCaseCustomFieldDesignValue', argsAPI)                                                
 
     def getTestCaseIDByName(self, testCaseName, testSuiteName=None, testProjectName=None):
