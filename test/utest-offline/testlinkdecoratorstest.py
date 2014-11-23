@@ -27,6 +27,13 @@ from testlink.testlinkdecorators import decoApiCallAddAttachment,\
 decoApiCallAddDevKey, decoApiCallWithoutArgs, \
 decoMakerApiCallReplaceTLResponseError, decoMakerApiCallWithArgs 
 
+import sys
+if sys.version_info[0] < 3:
+    if sys.version_info[1] < 7:
+        import unittest2 as unittest
+    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+
+
 class testlinkdecoratorsTestCase(unittest.TestCase):
     """ TestCases for decorators, used by TestlinkAPIGeneric for build 
         TestLink API methodsServer.  """

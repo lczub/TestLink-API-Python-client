@@ -44,6 +44,7 @@ NewProject
                                            |   
                                            --- 5 automated test steps
 """                                       
+from __future__ import print_function
 from testlink import TestlinkAPIGeneric, TestLinkHelper
 from testlink.testlinkerrors import TLResponseError
 import sys, os.path
@@ -95,21 +96,21 @@ NEWATTACHMENT_PNG=os.path.join(this_file_dirname, 'PyGreat.png')
 myTLVersion = myTestLink.testLinkVersion()
 
 # used connection settings
-print myTestLink.connectionInfo()
-print ""
+print(myTestLink.connectionInfo())
+print("")
 
 # CHANGE this name into a valid account, known in your TL application
 myTestUserName="admin"
 myTestUserName2="admin"
 # get user information
 response = myTestLink.getUserByLogin(myTestUserName)
-print "getUserByLogin", response
+print("getUserByLogin", response)
 myTestUserID=response[0]['dbID']
 response = myTestLink.getUserByID(myTestUserID)
-print "getUserByID   ", response
+print("getUserByID   ", response)
 
 # example asking the api client about methods arguments
-print myTestLink.whatArgs('createTestCase')
+print(myTestLink.whatArgs('createTestCase'))
 
 
 # example handling Response Error Codes
@@ -125,11 +126,11 @@ except TLResponseError as tl_err:
         # seems to be another response failure -  we forward it
         raise   
 
-print "Number of Projects in TestLink: %i " % len(myTestLink.getProjects())
-print ""
+print("Number of Projects in TestLink: %i " % len(myTestLink.getProjects()))
+print("")
 for project in myTestLink.getProjects():
-    print "Name: %(name)s ID: %(id)s " % project
-print ""
+    print("Name: %(name)s ID: %(id)s " % project)
+print("")
 
 # Creates the project
 projInfo = 'Example created with Python API class %s in TL %s' % \
@@ -138,81 +139,81 @@ newProject = myTestLink.createTestProject(NEWPROJECT, NEWPREFIX,
     notes=projInfo, active=1, public=1,
     options={'requirementsEnabled' : 1, 'testPriorityEnabled' : 1, 
              'automationEnabled' : 1,  'inventoryEnabled' : 1})
-print "createTestProject", newProject
+print("createTestProject", newProject)
 newProjectID = newProject[0]['id'] 
-print "New Project '%s' - id: %s" % (NEWPROJECT,newProjectID)
+print("New Project '%s' - id: %s" % (NEWPROJECT,newProjectID))
  
 # Create test plan A  - uses platforms
 newTestPlan = myTestLink.createTestPlan(NEWTESTPLAN_A, NEWPROJECT,
             notes='New TestPlan created with the Generic API - uses platforms.',
             active=1, public=1)    
-print "createTestPlan", newTestPlan
+print("createTestPlan", newTestPlan)
 newTestPlanID_A = newTestPlan[0]['id'] 
-print "New Test Plan '%s' - id: %s" % (NEWTESTPLAN_A,newTestPlanID_A)
+print("New Test Plan '%s' - id: %s" % (NEWTESTPLAN_A,newTestPlanID_A))
 
 # Create test plan B  - uses no platforms
 newTestPlan = myTestLink.createTestPlan(NEWTESTPLAN_B, NEWPROJECT,
             notes='New TestPlan created with the Generic API - uses no platforms.',
             active=1, public=1)    
-print "createTestPlan", newTestPlan
+print("createTestPlan", newTestPlan)
 newTestPlanID_B = newTestPlan[0]['id'] 
-print "New Test Plan '%s' - id: %s" % (NEWTESTPLAN_B,newTestPlanID_B)
+print("New Test Plan '%s' - id: %s" % (NEWTESTPLAN_B,newTestPlanID_B))
  
 # Create platform 'Big Bird x' 
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_A, 
         notes='Platform for Big Birds, unique name, only used in this project')
-print "createPlatform", newPlatForm
+print("createPlatform", newPlatForm)
 newPlatFormID_A = newPlatForm['id']
 # Add Platform  'Big Bird x' to platform 
 response = myTestLink.addPlatformToTestPlan(newTestPlanID_A, NEWPLATFORM_A) 
-print "addPlatformToTestPlan", response
+print("addPlatformToTestPlan", response)
 
 # Create platform 'Small Bird'
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_B, 
                 notes='Platform for Small Birds, name used in all example projects')
-print "createPlatform", newPlatForm
+print("createPlatform", newPlatForm)
 newPlatFormID_B = newPlatForm['id']
 # Add Platform  'Small Bird' to platform 
 response = myTestLink.addPlatformToTestPlan(newTestPlanID_A, NEWPLATFORM_B) 
-print "addPlatformToTestPlan", response
+print("addPlatformToTestPlan", response)
 
 # Create platform 'Ugly Bird'
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_C, 
                 notes='Platform for Ugly Birds, will be removed from test plan')
-print "createPlatform", newPlatForm
+print("createPlatform", newPlatForm)
 newPlatFormID_C = newPlatForm['id']
 # Add Platform  'Ugly Bird' to platform 
 response = myTestLink.addPlatformToTestPlan(newTestPlanID_A, NEWPLATFORM_C) 
-print "addPlatformToTestPlan", response
+print("addPlatformToTestPlan", response)
 
 # looking, which platforms exists
 response = myTestLink.getProjectPlatforms(newProjectID) 
-print "getProjectPlatforms", response
+print("getProjectPlatforms", response)
 
 
  
 #Creates the test Suite A      
 newTestSuite = myTestLink.createTestSuite(newProjectID, NEWTESTSUITE_A,
             "Details of the Test Suite A")  
-print "createTestSuite", newTestSuite
+print("createTestSuite", newTestSuite)
 newTestSuiteID_A = newTestSuite[0]['id'] 
-print "New Test Suite '%s' - id: %s" % (NEWTESTSUITE_A, newTestSuiteID_A)
+print("New Test Suite '%s' - id: %s" % (NEWTESTSUITE_A, newTestSuiteID_A))
  
 FirstLevelID = newTestSuiteID_A
   
 #Creates the test Suite B      
 newTestSuite = myTestLink.createTestSuite(newProjectID, NEWTESTSUITE_B,
             "Details of the Test Suite B")               
-print "createTestSuite", newTestSuite
+print("createTestSuite", newTestSuite)
 newTestSuiteID_B = newTestSuite[0]['id'] 
-print "New Test Suite '%s' - id: %s" % (NEWTESTSUITE_B, newTestSuiteID_B)
+print("New Test Suite '%s' - id: %s" % (NEWTESTSUITE_B, newTestSuiteID_B))
  
 #Creates the test Suite AA       
 newTestSuite = myTestLink.createTestSuite(newProjectID, NEWTESTSUITE_AA,
             "Details of the Test Suite AA",parentid=FirstLevelID)               
-print "createTestSuite", newTestSuite
+print("createTestSuite", newTestSuite)
 newTestSuiteID_AA = newTestSuite[0]['id'] 
-print "New Test Suite '%s' - id: %s" % (NEWTESTSUITE_AA, newTestSuiteID_AA)
+print("New Test Suite '%s' - id: %s" % (NEWTESTSUITE_AA, newTestSuiteID_AA))
  
 MANUAL = 1
 AUTOMATED = 2
@@ -236,9 +237,9 @@ steps_tc_aa = [
 newTestCase = myTestLink.createTestCase(NEWTESTCASE_AA, newTestSuiteID_AA, 
           newProjectID, myTestUserName, "This is the summary of the Test Case AA", 
           steps_tc_aa, preconditions='these are the preconditions')                 
-print "createTestCase", newTestCase
+print("createTestCase", newTestCase)
 newTestCaseID_AA = newTestCase[0]['id'] 
-print "New Test Case '%s' - id: %s" % (NEWTESTCASE_AA, newTestCaseID_AA)
+print("New Test Case '%s' - id: %s" % (NEWTESTCASE_AA, newTestCaseID_AA))
  
 #Creates the test case TC_B 
 steps_tc_b = [
@@ -257,34 +258,34 @@ newTestCase = myTestLink.createTestCase(NEWTESTCASE_B, newTestSuiteID_B,
           newProjectID, myTestUserName, "This is the summary of the Test Case B", 
           steps_tc_b, preconditions='these are the preconditions', 
           executiontype=AUTOMATED)               
-print "createTestCase", newTestCase
+print("createTestCase", newTestCase)
 newTestCaseID_B = newTestCase[0]['id'] 
-print "New Test Case '%s' - id: %s" % (NEWTESTCASE_B, newTestCaseID_B)
+print("New Test Case '%s' - id: %s" % (NEWTESTCASE_B, newTestCaseID_B))
 
 # Add  test cases to test plan - we need the full external id !
 # for every test case version 1 is used
 tc_version=1
 # TC AA should be tested with platforms 'Big Bird'+'Small Bird'
 response = myTestLink.getTestCase(testcaseid=newTestCaseID_AA)
-print "getTestCase", response
+print("getTestCase", response)
 tc_aa_full_ext_id = response[0]['full_tc_external_id']
 response = myTestLink.addTestCaseToTestPlan(newProjectID, newTestPlanID_A, 
                     tc_aa_full_ext_id, tc_version, platformid=newPlatFormID_A)
-print "addTestCaseToTestPlan", response
+print("addTestCaseToTestPlan", response)
 tc_aa_full_ext_id = myTestLink.getTestCase(testcaseid=newTestCaseID_AA)[0]['full_tc_external_id']
 response = myTestLink.addTestCaseToTestPlan(newProjectID, newTestPlanID_A, 
                     tc_aa_full_ext_id, tc_version, platformid=newPlatFormID_B)
-print "addTestCaseToTestPlan", response
+print("addTestCaseToTestPlan", response)
 # change test case TC_AA - delete step 8 (step 7 does not exist)
 response = myTestLink.deleteTestCaseSteps(tc_aa_full_ext_id, [7,8], 
                                           version=tc_version)
-print "deleteTestCaseSteps", response
+print("deleteTestCaseSteps", response)
 
 # TC B should be tested with platform 'Small Bird'
 tc_b_full_ext_id = myTestLink.getTestCase(testcaseid=newTestCaseID_B)[0]['full_tc_external_id']
 response = myTestLink.addTestCaseToTestPlan(newProjectID, newTestPlanID_A, 
                     tc_b_full_ext_id, tc_version, platformid=newPlatFormID_B)
-print "addTestCaseToTestPlan", response
+print("addTestCaseToTestPlan", response)
 
 #Update test case TC_B -> high, change step 5, new step 6
 steps_tc_b_v1u = steps_tc_b[:4] 
@@ -296,7 +297,7 @@ steps_tc_b_v1u.append(
      'expected_results' : "Step result 6 - b added", 'execution_type' : AUTOMATED})                 
 response = myTestLink.updateTestCase(tc_b_full_ext_id, version=tc_version,
                 steps=steps_tc_b_v1u, importance='high', estimatedexecduration=3)
-print "updateTestCase", response
+print("updateTestCase", response)
 
 # create additional steps via createTestCaseSteps - action create
 steps_tc_b_c67 = [
@@ -306,7 +307,7 @@ steps_tc_b_c67 = [
      'expected_results' : "create - cause step 7 not yet exist", 'execution_type' : AUTOMATED}]
 response = myTestLink.createTestCaseSteps('create', steps_tc_b_c67, 
                         testcaseexternalid=tc_b_full_ext_id, version=tc_version)
-print "createTestCaseSteps.create", response
+print("createTestCaseSteps.create", response)
 # create additional steps via createTestCaseSteps - action update
 steps_tc_b_c38 = [
     {'step_number' : 3, 'actions' : "action 3 createTestCaseSteps.update" , 
@@ -315,13 +316,13 @@ steps_tc_b_c38 = [
      'expected_results' : "create - cause step 8 not yet exist", 'execution_type' : AUTOMATED}]
 response = myTestLink.createTestCaseSteps('update', steps_tc_b_c38, 
                         testcaseid=newTestCaseID_B, version=tc_version)
-print "createTestCaseSteps.update", response
+print("createTestCaseSteps.update", response)
 
 
 # In test plan B TC B  should be tested without  platform 
 response = myTestLink.addTestCaseToTestPlan(newProjectID, newTestPlanID_B, 
                                             tc_b_full_ext_id, tc_version)
-print "addTestCaseToTestPlan", response
+print("addTestCaseToTestPlan", response)
 
 # # Try to Remove Platform  'Big Bird' from platform 
 # response = myTestLink.removePlatformFromTestPlan(newTestPlanID_A, NEWPLATFORM_C) 
@@ -329,74 +330,74 @@ print "addTestCaseToTestPlan", response
 
 # Remove Platform  'Ugly Bird' from platform 
 response = myTestLink.removePlatformFromTestPlan(newTestPlanID_A, NEWPLATFORM_C) 
-print "removePlatformFromTestPlan", response
+print("removePlatformFromTestPlan", response)
 
 
 # -- Create Build for TestPlan A (uses platforms)
 newBuild = myTestLink.createBuild(newTestPlanID_A, NEWBUILD_A, 
                                   buildnotes='Build for TestPlan with platforms')
-print "createBuild", newBuild
+print("createBuild", newBuild)
 newBuildID_A = newBuild[0]['id'] 
-print "New Build '%s' - id: %s" % (NEWBUILD_A, newBuildID_A)
+print("New Build '%s' - id: %s" % (NEWBUILD_A, newBuildID_A))
 
 # assign user to test case execution tasks - test plan with platforms
 response = myTestLink.assignTestCaseExecutionTask( myTestUserName, 
                         newTestPlanID_A, tc_aa_full_ext_id,
                         buildid=newBuildID_A, platformname=NEWPLATFORM_A)
-print "assignTestCaseExecutionTask", response
+print("assignTestCaseExecutionTask", response)
 response = myTestLink.assignTestCaseExecutionTask( myTestUserName2, 
                         newTestPlanID_A, tc_aa_full_ext_id,
                         buildname=NEWBUILD_A, platformid=newPlatFormID_B)  
-print "assignTestCaseExecutionTask", response
+print("assignTestCaseExecutionTask", response)
 response = myTestLink.assignTestCaseExecutionTask( myTestUserName, 
                         newTestPlanID_A, tc_b_full_ext_id,
                         buildname=NEWBUILD_A, platformname=NEWPLATFORM_B)  
-print "assignTestCaseExecutionTask", response
+print("assignTestCaseExecutionTask", response)
 
 # get test case assigned tester
 response = myTestLink.getTestCaseAssignedTester(  
                         newTestPlanID_A, tc_aa_full_ext_id,
                         buildid=newBuildID_A, platformname=NEWPLATFORM_A)
-print "getTestCaseAssignedTester TC_AA TP_A Platform A", response
+print("getTestCaseAssignedTester TC_AA TP_A Platform A", response)
 response = myTestLink.getTestCaseAssignedTester( 
                         newTestPlanID_A, tc_aa_full_ext_id,
                         buildname=NEWBUILD_A, platformid=newPlatFormID_B)  
-print "getTestCaseAssignedTester TC_AA TP_A Platform B", response
+print("getTestCaseAssignedTester TC_AA TP_A Platform B", response)
 response = myTestLink.getTestCaseAssignedTester(
                         newTestPlanID_A, tc_b_full_ext_id,
                         buildname=NEWBUILD_A, platformname=NEWPLATFORM_B)  
-print "getTestCaseAssignedTester TC_B TP_A Platform B", response
+print("getTestCaseAssignedTester TC_B TP_A Platform B", response)
 
 # get bugs for test case TC_AA in test plan A - state TC not executed
 response = myTestLink.getTestCaseBugs(newTestPlanID_A, 
                                       testcaseexternalid=tc_aa_full_ext_id)
-print "getTestCaseBugs TC_AA in TP_A (TC is not executed)", response
+print("getTestCaseBugs TC_AA in TP_A (TC is not executed)", response)
 
 # report Test Case Results for platform 'Big Bird'
 # TC_AA failed, build should be guessed, TC identified with external id
 newResult = myTestLink.reportTCResult(newTestPlanID_A, 'f', guess=True,
                                       testcaseexternalid=tc_aa_full_ext_id,
                                       platformname=NEWPLATFORM_A)
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_AA = newResult[0]['id']
 
 # get bugs for test case TC_AA in test plan A - state TC is executed
 response = myTestLink.getTestCaseBugs(newTestPlanID_A, 
                                       testcaseexternalid=tc_aa_full_ext_id)
-print "getTestCaseBugs TC_AA in TP_A (TC is executed, no bug)", response
+print("getTestCaseBugs TC_AA in TP_A (TC is executed, no bug)", response)
 
 # report Test Case Results for platform 'Small Bird'
 # TC_AA passed, build should be guessed, TC identified with external id
 newResult = myTestLink.reportTCResult(newTestPlanID_A, 'p', guess=True,
                                       testcaseexternalid=tc_aa_full_ext_id,
                                       platformid=newPlatFormID_B)
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_AA_p = newResult[0]['id']
 # TC_B passed, explicit build and some notes , TC identified with internal id
 newResult = myTestLink.reportTCResult(newTestPlanID_A, 'p', 
                 buildid=newBuildID_A, testcaseid=newTestCaseID_B, 
                 platformname=NEWPLATFORM_B, notes="first try")
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_B = newResult[0]['id']
 
 # add this python file as Attachemnt to last execution of TC_B with 
@@ -405,48 +406,48 @@ a_file=open(NEWATTACHMENT_PY)
 newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_B, 
         title='Textfile Example', description='Text Attachment Example for a TestCase Execution',
         filename='MyPyExampleApiGeneric.py')
-print "uploadExecutionAttachment", newAttachment
+print("uploadExecutionAttachment", newAttachment)
 # add png file as Attachemnt to last execution of TC_AA
 # !Attention - on WINDOWS use binary mode for none text file
 # see http://docs.python.org/2/tutorial/inputoutput.html#reading-and-writing-files
 a_file=open(NEWATTACHMENT_PNG, mode='rb')
 newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_AA, 
             title='PNG Example', description='PNG Attachment Example for a TestCase Execution')
-print "uploadExecutionAttachment", newAttachment
+print("uploadExecutionAttachment", newAttachment)
 
 # -- Create Build for TestPlan B (uses no platforms)
 newBuild = myTestLink.createBuild(newTestPlanID_B, NEWBUILD_B, 
                                   buildnotes='Build for TestPlan without platforms')
-print "createBuild", newBuild
+print("createBuild", newBuild)
 newBuildID_B = newBuild[0]['id'] 
-print "New Build '%s' - id: %s" % (NEWBUILD_B, newBuildID_B)
+print("New Build '%s' - id: %s" % (NEWBUILD_B, newBuildID_B))
 
 # assign user to test case execution tasks - test plans without platforms
 response = myTestLink.assignTestCaseExecutionTask( myTestUserName, 
                         newTestPlanID_B, tc_b_full_ext_id, buildname=NEWBUILD_B)  
-print "assignTestCaseExecutionTask", response
+print("assignTestCaseExecutionTask", response)
 
 # get test case assigned tester
 response = myTestLink.getTestCaseAssignedTester(  
                         newTestPlanID_B, tc_b_full_ext_id, buildname=NEWBUILD_B)
-print "getTestCaseAssignedTester TC_B TP_B no Platform", response
+print("getTestCaseAssignedTester TC_B TP_B no Platform", response)
 
 # TC_B in test plan b (without platform)
 # first try failed (with bug), second blocked - all by user myTestUserName
 newResult = myTestLink.reportTCResult(newTestPlanID_B, 'f', 
                 buildid=newBuildID_B, testcaseid=newTestCaseID_B, bugid='007',
                 notes="no birds are singing", user=myTestUserName)
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_B_f = newResult[0]['id']
 newResult = myTestLink.reportTCResult(newTestPlanID_B, 'b', 
                 buildid=newBuildID_B, testcaseid=newTestCaseID_B, bugid='008',
                 notes="hungry birds blocks the execution", user=myTestUserName)
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_B_b = newResult[0]['id']
 # get bugs for test case TC_B in test plan B - state TC is executed with bug
 response = myTestLink.getTestCaseBugs(newTestPlanID_B, 
                                       testcaseid=newTestCaseID_B)
-print "getTestCaseBugs TC_B in TP_B (TC is executed with 2 bugs)", response
+print("getTestCaseBugs TC_B in TP_B (TC is executed with 2 bugs)", response)
 
 
 # now we make a mistake and commit the same result a second time
@@ -454,12 +455,12 @@ print "getTestCaseBugs TC_B in TP_B (TC is executed with 2 bugs)", response
 newResult = myTestLink.reportTCResult(newTestPlanID_B, 'b', 
                 buildid=newBuildID_B, testcaseid=newTestCaseID_B, 
                 notes="mistake, commit same result a second time")
-print "reportTCResult", newResult
+print("reportTCResult", newResult)
 newResultID_B_b2 = int(newResult[0]['id'])
 try:
     # if TL configuration allows deletion of executions, no error will occur
     response = myTestLink.deleteExecution(newResultID_B_b2)
-    print "deleteExecution", response
+    print("deleteExecution", response)
 except TLResponseError as tl_err:
     if tl_err.code == 232:
         # TL configuration does not allow deletion of executions
@@ -472,126 +473,126 @@ except TLResponseError as tl_err:
 # - AA from manual -> auto  and B from auto -> manual 
 newResult = myTestLink.setTestCaseExecutionType(tc_aa_full_ext_id, tc_version, 
                                                 newProjectID, AUTOMATED)
-print "setTestCaseExecutionType", response
+print("setTestCaseExecutionType", response)
 newResult = myTestLink.setTestCaseExecutionType(tc_b_full_ext_id, tc_version, 
                                                 newProjectID, MANUAL)
-print "setTestCaseExecutionType", response
+print("setTestCaseExecutionType", response)
 
 # get information - TestProject
 response = myTestLink.getTestProjectByName(NEWPROJECT)
-print "getTestProjectByName", response
+print("getTestProjectByName", response)
 response = myTestLink.getProjectTestPlans(newProjectID)
-print "getProjectTestPlans", response
+print("getProjectTestPlans", response)
 response = myTestLink.getFirstLevelTestSuitesForTestProject(newProjectID)
-print "getFirstLevelTestSuitesForTestProject", response
+print("getFirstLevelTestSuitesForTestProject", response)
 
 # get information - TestPlan
 response = myTestLink.getTestPlanByName(NEWPROJECT, NEWTESTPLAN_A)
-print "getTestPlanByName", response
+print("getTestPlanByName", response)
 response = myTestLink.getTotalsForTestPlan(newTestPlanID_A)
-print "getTotalsForTestPlan", response
+print("getTotalsForTestPlan", response)
 response = myTestLink.getBuildsForTestPlan(newTestPlanID_A)
-print "getBuildsForTestPlan", response
+print("getBuildsForTestPlan", response)
 response = myTestLink.getLatestBuildForTestPlan(newTestPlanID_A)
-print "getLatestBuildForTestPlan", response
+print("getLatestBuildForTestPlan", response)
 response = myTestLink.getTestPlanPlatforms(newTestPlanID_A)
-print "getTestPlanPlatforms", response
+print("getTestPlanPlatforms", response)
 response = myTestLink.getTestSuitesForTestPlan(newTestPlanID_A)
-print "getTestSuitesForTestPlan", response
+print("getTestSuitesForTestPlan", response)
 # get failed Testcases 
 response = myTestLink.getTestCasesForTestPlan(newTestPlanID_A, executestatus='f')
-print "getTestCasesForTestPlan", response
+print("getTestCasesForTestPlan", response)
 
 # get information - TestSuite
 response = myTestLink.getTestSuiteByID(newTestSuiteID_B)
-print "getTestSuiteByID", response
+print("getTestSuiteByID", response)
 response = myTestLink.getTestSuitesForTestSuite(newTestSuiteID_A)
-print "getTestSuitesForTestSuite", response
+print("getTestSuitesForTestSuite", response)
 response = myTestLink.getTestCasesForTestSuite(newTestSuiteID_A,
                                                deep=True, details='full')
-print "getTestCasesForTestSuite", response
+print("getTestCasesForTestSuite", response)
 response = myTestLink.getTestCasesForTestSuite(newTestSuiteID_B,
                                                deep=False, details='only_id')
-print "getTestCasesForTestSuite", response
+print("getTestCasesForTestSuite", response)
 
 # get informationen - TestCase_B
 response = myTestLink.getTestCaseIDByName(NEWTESTCASE_B, testprojectname=NEWPROJECT)
-print "getTestCaseIDByName", response
+print("getTestCaseIDByName", response)
 # get informationen - TestCase_AA via Pathname
 tcpathname = '::'.join([NEWPROJECT, NEWTESTSUITE_A, NEWTESTSUITE_AA, NEWTESTCASE_AA])
 response = myTestLink.getTestCaseIDByName('unknown', testcasepathname=tcpathname)
-print "getTestCaseIDByName", response
+print("getTestCaseIDByName", response)
 # get execution result
 response = myTestLink.getLastExecutionResult(newTestPlanID_A, 
                                              testcaseexternalid=tc_aa_full_ext_id)
-print "getLastExecutionResult", response
+print("getLastExecutionResult", response)
 response = myTestLink.getLastExecutionResult(newTestPlanID_A, 
                                              testcaseid=newTestCaseID_B)
-print "getLastExecutionResult", response
+print("getLastExecutionResult", response)
 if not myTLVersion == '<= 1.9.8':
     # new optional arguments platformid , buildid with TL 1.9.9
     response = myTestLink.getLastExecutionResult(
                             newTestPlanID_A, testcaseid=newTestCaseID_AA,
                             platformid=newPlatFormID_A)
-    print "getLastExecutionResult", response
+    print("getLastExecutionResult", response)
     
 response = myTestLink.getExecCountersByBuild(newTestPlanID_A)
-print "getExecCountersByBuild", response
+print("getExecCountersByBuild", response)
 response = myTestLink.getExecCountersByBuild(newTestPlanID_B)
-print "getExecCountersByBuild", response
+print("getExecCountersByBuild", response)
 
 
 # get information - general 
 response = myTestLink.getFullPath(int(newTestSuiteID_AA))
-print "getFullPath", response
+print("getFullPath", response)
 response = myTestLink.getFullPath([int(newTestCaseID_AA), int(newTestCaseID_B)])
-print "getFullPath", response
+print("getFullPath", response)
 
 # attachments
 # add png file as Attachment to test project 
 a_file=open(NEWATTACHMENT_PNG, mode='rb')
 newAttachment = myTestLink.uploadTestProjectAttachment(a_file, newProjectID, 
             title='PNG Example', description='PNG Attachment Example for a TestProject')
-print "uploadTestProjectAttachment", newAttachment
+print("uploadTestProjectAttachment", newAttachment)
 # add png file as Attachnent to test suite A 
 a_file=open(NEWATTACHMENT_PNG, mode='rb')
 newAttachment = myTestLink.uploadTestSuiteAttachment(a_file, newTestSuiteID_A, 
             title='PNG Example', description='PNG Attachment Example for a TestSuite')
-print "uploadTestSuiteAttachment", newAttachment
+print("uploadTestSuiteAttachment", newAttachment)
 # add png file as Attachment to test case B 
 a_file=open(NEWATTACHMENT_PNG, mode='rb')
 newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 
             title='PNG Example', description='PNG Attachment Example for a TestCase')
-print "uploadTestCaseAttachment", newAttachment
+print("uploadTestCaseAttachment", newAttachment)
 # get Attachment of test case B 
 # response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
 # print "getTestCaseAttachments", response
 response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
-print "getTestCaseAttachments", response
+print("getTestCaseAttachments", response)
 
 # no test data
 # response = myTestLink.getTestCaseCustomFieldDesignValue(
 #             tc_aa_full_ext_id, 1, newProjectID, 'cfieldname', details='simple')
 # print "getTestCaseCustomFieldDesignValue", response
-print "getTestCaseCustomFieldDesignValue", "Sorry currently no testdata"
+print("getTestCaseCustomFieldDesignValue", "Sorry currently no testdata")
 
 # add png file as Attachemnt to a requirement specification.
-print "uploadRequirementSpecificationAttachment", "Sorry currently no testdata"
+print("uploadRequirementSpecificationAttachment", "Sorry currently no testdata")
 # add png file as Attachemnt to a requirement.
-print "uploadRequirementAttachment", "Sorry currently no testdata"
+print("uploadRequirementAttachment", "Sorry currently no testdata")
 
 # add requirements to testcase AA
 # response = myTestLink.assignRequirements(tc_aa_full_ext_id, newProjectID, 
 #                         [{'req_spec' : 6729, 'requirements' : [6731]},
 #                          {'req_spec' : 6733, 'requirements' : [6735, 6737]}])
-print "assignRequirements", "Sorry currently no testdata"
+print("assignRequirements", "Sorry currently no testdata")
 
-print ""
-print "Number of Projects in TestLink: %i " % len(myTestLink.getProjects())
-print ""
+print("")
+print("Number of Projects in TestLink: %i " % len(myTestLink.getProjects()))
+print("")
 for project in myTestLink.getProjects():
-    print "Name: %(name)s ID: %(id)s " % project
-print ""
+    print("Name: %(name)s ID: %(id)s " % project)
+print("")
 
  
 # 

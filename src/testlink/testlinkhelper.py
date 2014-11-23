@@ -19,7 +19,7 @@
 
 import os
 from argparse import ArgumentParser
-from version import VERSION
+from .version import VERSION
 
 
 class TestLinkHelper(object):

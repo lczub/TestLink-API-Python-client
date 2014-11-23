@@ -16,9 +16,9 @@
 #  limitations under the License.
 #
 # ------------------------------------------------------------------------
-
-from testlinkapi import TestlinkAPIClient, TestLinkHelper
-from testlinkerrors import TestLinkError
+from __future__ import print_function
+from .testlinkapi import TestlinkAPIClient, TestLinkHelper
+from .testlinkerrors import TestLinkError
 from datetime import date
 import warnings
 
@@ -50,7 +50,7 @@ please use testlinkapigeneric.TestlinkAPIGeneric or testlinkapi.TestlinkAPIClien
         or raise TestLinkError exception with error message in case of error
         """    
         results = super(TestLink, self).getTestCaseIDByName(testCaseName, testSuiteName, testProjectName)
-        if results[0].has_key("message"):
+        if "message" in results[0]:
             raise TestLinkError(results[0]["message"])
         elif len(results) > 1:
             raise TestLinkError("(getTestCaseIDByName) - Several case test found. Suite name must not be duplicate for the same project")
@@ -78,7 +78,7 @@ please use testlinkapigeneric.TestlinkAPIGeneric or testlinkapi.TestlinkAPIClien
         
         # Check parameters
         for data in ["testProjectName", "testPlanName", "buildName"]:
-            if not kwargs.has_key(data):
+            if data not in kwargs:
                 raise TestLinkError("(reportResult) - Missing key %s in anonymous dictionnary" % data)
 
         # Get project id
@@ -119,7 +119,7 @@ please use testlinkapigeneric.TestlinkAPIGeneric or testlinkapi.TestlinkAPIClien
             #No notes
             testNotes = ""
 
-        print "testNotes: %s" % testNotes
+        print("testNotes: %s" % testNotes)
         # Now report results
         results = self.reportTCResult(caseId, planId, kwargs["buildName"], testResult, testNotes)
         # Check errors
@@ -134,7 +134,7 @@ please use testlinkapigeneric.TestlinkAPIGeneric or testlinkapi.TestlinkAPIClien
         A TestLinkError is raised in case of error
         """
         results = super(TestLink, self).getTestProjectByName(testProjectName)
-        if results[0].has_key("message"):
+        if "message" in results[0]:
             raise TestLinkError(results[0]["message"])
 
         return results[0]
@@ -145,7 +145,7 @@ please use testlinkapigeneric.TestlinkAPIGeneric or testlinkapi.TestlinkAPIClien
         A TestLinkError is raised in case of error
         """
         results = super(TestLink, self).getTestPlanByName(testProjectName, testPlanName)
-        if results[0].has_key("message"):
+        if "message" in results[0]:
             raise TestLinkError(results[0]["message"])
 
         return results[0]
@@ -174,5 +174,5 @@ if __name__ == "__main__":
     tl_helper = TestLinkHelper()
     tl_helper.setParamsFromArgs()
     myTestLink = tl_helper.connect(TestLink)
-    print myTestLink
-    print myTestLink.about()
+    print(myTestLink)
+    print(myTestLink.about())

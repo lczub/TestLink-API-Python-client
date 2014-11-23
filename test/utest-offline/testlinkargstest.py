@@ -24,6 +24,12 @@
 import unittest
 # from testlink.testlinkapigeneric import testlinkargs
 from testlink import testlinkargs
+import sys
+if sys.version_info[0] < 3:
+    if sys.version_info[1] < 7:
+        import unittest2 as unittest
+    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+
 
 
 class testlinkargsTestCase(unittest.TestCase):

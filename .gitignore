@@ -1,3 +1,5 @@
+.tox
+.idea
 .project
 .pydevproject
 .settings/

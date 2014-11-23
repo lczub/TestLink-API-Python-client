@@ -85,7 +85,7 @@ def registerArgNonApi(methodName, argName):
 def getMethodsWithPositionalArgs():
     """ returns a dictionary with method names and there positional args """
     positionalArgNames = {}
-    for mname, argdef in _apiMethodsArgs.items():
+    for mname, argdef in list(_apiMethodsArgs.items()):
         # does method MNAME has defined positional arguments?  
         if argdef[0]:
             positionalArgNames[mname] = argdef[0][:]

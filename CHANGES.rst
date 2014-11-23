@@ -1,7 +1,15 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
-TestLink-API-Python-client release notes v0.5.2 (Oct. 2014) 
+TestLink-API-Python-client release notes v0.6 (Nov. 2014)
+---------------------------------------------------------
+support for python 3 (3.3 and 3.4)
+added tox, pytest and travis for tests and ci
+
+**Note: tests are still unreliable as order of keywords is not maintained. Need to implement ordered dict to ensure all tests pass consistently**
+
+
+TestLink-API-Python-client release notes v0.5.2 (Oct. 2014)
 -----------------------------------------------------------
 support for TestLink release 1.9.12
 
@@ -17,7 +25,7 @@ new TestlinkAPIGeneric and TestlinkAPIClient api method
 examples see `<example/TestLinkExample.py>`_  
 
 implement 1.9.12 new api method - getTestCaseBugs #30
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 new TestlinkAPIGeneric and TestlinkAPIClient api method
 
@@ -29,11 +37,11 @@ new TestlinkAPIGeneric and TestlinkAPIClient api method
 examples see `<example/TestLinkExample.py>`_  
   
 TestLink-API-Python-client release notes v0.5.1 (Aug. 2014) 
-------------------------------------------------------------
+-----------------------------------------------------------
 support for TestLink release 1.9.11
 
 implement 1.9.11 api change - getLastExecutionResult #27
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TestlinkAPIGeneric and TestlinkAPIClient api method getLastExecutionResult() 
 accepts now following additional optional arguments
@@ -47,7 +55,7 @@ example:
   [{ ... , 'tcversion_id': '8929', ... , 'bugs': [{'bug_id': '4711'}], ... }]
 
 implement 1.9.11 new api method - assignTestCaseExecutionTask #26
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 new TestlinkAPIGeneric and TestlinkAPIClient api method
 
@@ -59,7 +67,7 @@ examples see `<example/TestLinkExample.py>`_
 
 
 TestLink-API-Python-client release notes v0.5.0 (Jul. 2014) 
-------------------------------------------------------------
+-----------------------------------------------------------
 support for TestLink release 1.9.10
 
 new service methods - list keywords #25
@@ -99,7 +107,7 @@ accepts now following additional optional arguments (usable with TL >= 1.9.10)
 - parameter getkeywords
 
 implement 1.9.10 api change - reportTCResult #24
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TestlinkAPIGeneric and TestlinkAPIClient api method reportTCResult() 
 accepts now following additional optional arguments (usable with TL >= 1.9.10) 
@@ -108,7 +116,7 @@ accepts now following additional optional arguments (usable with TL >= 1.9.10)
 
 
 implement missing 1.9.8 api method - CustomField #12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 new TestlinkAPIGeneric and TestlinkAPIClient api methods
 
@@ -155,7 +163,7 @@ new TestlinkAPIGeneric and TestlinkAPIClient service method to return connection
 - connectionInfo()
 
 implement missing 1.9.8 api method - miscellaneous #14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 new TestlinkAPIGeneric and TestlinkAPIClient api methods
 

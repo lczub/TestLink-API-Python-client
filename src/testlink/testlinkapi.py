@@ -19,8 +19,10 @@
 
 #import xmlrpclib
 
-from testlinkapigeneric import TestlinkAPIGeneric, TestLinkHelper
-from testlinkerrors import TLArgError
+from __future__ import print_function
+from .testlinkapigeneric import TestlinkAPIGeneric, TestLinkHelper
+from .testlinkerrors import TLArgError
+import sys
 
 
 class TestlinkAPIClient(TestlinkAPIGeneric):
@@ -115,7 +117,7 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
                                                 *argsPositional, **argsOptional)
         if type(response) == dict:
             # convert dict into list - just use dicts values
-            response = response.values()
+            response = list(response.values())
         return response
 
     def createTestCase(self, *argsPositional, **argsOptional):
@@ -133,7 +135,7 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         # store current stepsList as argument 'steps', when argsOptional defines
         # no own 'steps' item
         if self.stepsList:
-            if argsOptional.has_key('steps'):
+            if 'steps' in argsOptional:
                 raise TLArgError('confusing createTestCase arguments - ' +
                                  '.stepsList and method args define steps')
             argsOptional['steps'] = self.stepsList
@@ -277,12 +279,12 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
             
         # if changed values defines a different test suite, add the correct 
         # project id
-        if changedArgs.has_key('testsuiteid'):
+        if 'testsuiteid' in changedArgs:
             changedProjID = self.getProjectIDByNode(changedArgs['testsuiteid'])
             changedArgs['testprojectid'] = changedProjID
          
         # change orig values for TC-copy 
-        for (argName, argValue) in changedArgs.items():
+        for (argName, argValue) in list(changedArgs.items()):
             newArgItems[argName] = argValue
         
         # separate positional and optional createTestCase arguments          
@@ -333,7 +335,10 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
             if a_ts_tc['id'] == a_tc_id:
                 keyword_details =  a_ts_tc.get('keywords', {})
             
-        keywords = map((lambda x: x['keyword']), keyword_details.values())            
+        if sys.version_info[0] < 3:
+            keywords = map((lambda x: x['keyword']), keyword_details.values())
+        else:
+            keywords = [kw['keyword'] for kw in keyword_details.values()]
         return keywords
 
     def listKeywordsForTS(self, internal_ts_id):
@@ -348,7 +353,10 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         for a_ts_tc in all_tc_for_ts:
             tc_id = a_ts_tc['id']
             keyword_details =  a_ts_tc.get('keywords', {})
-            keywords = map((lambda x: x['keyword']), keyword_details.values())
+            if sys.version_info[0] < 3:
+                keywords = map((lambda x: x['keyword']), keyword_details.values())
+            else:
+                keywords = [kw['keyword'] for kw in keyword_details.values()]
             response[tc_id] = keywords
         
         return response
@@ -450,7 +458,7 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         """
         projects=self.getProjects()
         for project in projects:
-            print "Name: %s ID: %s " % (project['name'], project['id'])
+            print("Name: %s ID: %s " % (project['name'], project['id']))
   
 
     def initStep(self, actions, expected_results, execution_type):
@@ -492,7 +500,7 @@ if __name__ == "__main__":
     tl_helper = TestLinkHelper()
     tl_helper.setParamsFromArgs()
     myTestLink = tl_helper.connect(TestlinkAPIClient)
-    print myTestLink
+    print(myTestLink)
 
 
 

@@ -21,6 +21,7 @@
 # which have been created during the last 7 days
 
 
+from __future__ import print_function
 from testlink import TestlinkAPIClient, TestLinkHelper
 import time
 
@@ -45,8 +46,8 @@ if __name__ == '__main__':
     currentTime = time.localtime() 
     oldTime     = time.localtime(time.time() - 3600 * 24 * 7)
     
-    print '%s test cases created between %s and %s' % \
+    print('%s test cases created between %s and %s' % \
             (projName, time.strftime('%Y-%m-%d', oldTime),  
-             time.strftime('%Y-%m-%d', currentTime))
+             time.strftime('%Y-%m-%d', currentTime)))
     for TCdata in iterTCasesfromTProject(tlapi, projName, oldTime, currentTime):
-        print '  %(name)s %(version)s %(creation_ts)s' % TCdata
+        print('  %(name)s %(version)s %(creation_ts)s' % TCdata)

@@ -9,7 +9,9 @@
 from os.path import join, dirname
 from distutils.core import setup
 
-execfile(join(dirname(__file__), 'src', 'testlink', 'version.py'))
+with open(join(dirname(__file__), 'src', 'testlink', 'version.py')) as fpv:
+    version_code = compile(fpv.read(), 'version.py', 'exec')
+    exec(version_code)
 
 CLASSIFIERS = [
   'Development Status :: 5 - Production/Stable',
@@ -17,6 +19,8 @@ CLASSIFIERS = [
   'Operating System :: OS Independent',
   'Programming Language :: Python :: 2.6',
   'Programming Language :: Python :: 2.7',
+  'Programming Language :: Python :: 3.3',
+  'Programming Language :: Python :: 3.4',
   'Topic :: Software Development :: Testing',
   'Topic :: Software Development :: Libraries :: Python Modules'
 ]

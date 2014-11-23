@@ -24,6 +24,12 @@ import unittest
 from testlink import TestlinkAPIClient, TestLinkHelper
 from testlink.testlinkerrors import TLArgError
 
+import sys
+if sys.version_info[0] < 3:
+    if sys.version_info[1] < 7:
+        import unittest2 as unittest
+    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+
 # scenario_a includes response from a testlink 1.9.3 server
 SCENARIO_A = {'getProjects' : [
                {'opt': {'requirementsEnabled': 0, 'testPriorityEnabled': 1, 
@@ -286,7 +292,7 @@ class DummyAPIClient(TestlinkAPIClient):
                 datakey = str(datakey)
             else:
                 datakey = argsAPI.get('testcaseexternalid', '')
-            if argsAPI.has_key('version'):
+            if 'version' in argsAPI:
                 datakey += '-%(version)s' % argsAPI
             response = data[datakey]
         elif methodAPI in ['getFullPath']:
@@ -391,7 +397,7 @@ class TestLinkAPIOfflineTestCase(unittest.TestCase):
         self.api.initStep("action A", "result A", 0)
         self.api.appendStep("action B", "result B", 1)
         self.api.appendStep("action C", "result C", 0)
-        with self.assertRaisesRegexp(TLArgError, 'confusing createTestCase*'):
+        with self.assertRaisesRegex(TLArgError, 'confusing createTestCase*'):
             self.api.createTestCase('case 4711', 4712, 4713, 'Big Bird', 
                                     'summary 4714', steps=[])
         

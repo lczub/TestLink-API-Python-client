@@ -33,7 +33,7 @@ or generate a description of all implemented API method: ::
  tlh = testlink.TestLinkHelper()
  tls = tlh.connect(testlink.TestlinkAPIClient)
  for m in testlink.testlinkargs._apiMethodsArgs.keys():
- 	print tls.whatArgs(m), '\n'
+     print(tls.whatArgs(m), '\n')
 
 Copy test cases
 ---------------
@@ -100,7 +100,7 @@ alternative optional args, default reporter (user for devKey)
                         buildid='a build name', platformname='a platform name') 
                         
 List keywords
--------------------
+-------------
 
 Using the api method - keywords for all test cases of one test suite
 

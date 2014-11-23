@@ -17,8 +17,12 @@
 #
 # ------------------------------------------------------------------------
 
-import xmlrpclib
-import testlinkerrors
+import sys
+if sys.version_info[0] < 3:
+    import xmlrpclib
+else:
+    import xmlrpc.client as xmlrpclib
+from . import testlinkerrors
 from .testlinkhelper import TestLinkHelper, VERSION
 from .testlinkargs import getMethodsWithPositionalArgs, getArgsForMethod
 from .testlinkdecorators import decoApiCallAddAttachment,\
@@ -49,7 +53,7 @@ class TestlinkAPIGeneric(object):
         encoding=args.get('encoding')
         verbose=args.get('verbose',0)
         allow_none=args.get('allow_none',0)
-        self.server = xmlrpclib.Server(server_url, transport, encoding, 
+        self.server = xmlrpclib.Server(server_url, transport, encoding,
                                        verbose, allow_none)
         self.devKey = devKey
         self._server_url = server_url
@@ -1186,11 +1190,11 @@ TL version >= 1.9.11
                 response = getattr(self.server.tl, methodNameAPI)()
             else:
                 response = getattr(self.server.tl, methodNameAPI)(argsAPI)
-        except (IOError, xmlrpclib.ProtocolError), msg:
+        except (IOError, xmlrpclib.ProtocolError) as msg:
             new_msg = 'problems connecting the TestLink Server %s\n%s' %\
             (self._server_url, msg) 
             raise testlinkerrors.TLConnectionError(new_msg)
-        except xmlrpclib.Fault, msg:
+        except xmlrpclib.Fault as msg:
             new_msg = 'problems calling the API method %s\n%s' %\
             (methodNameAPI, msg) 
             raise testlinkerrors.TLAPIError(new_msg)
@@ -1223,7 +1227,7 @@ TL version >= 1.9.11
         # issue #20: Following line works with Py27, but not with Py26
         # return {nameList[x] : valueList[x] for x in range(len(nameList)) }
         # this line works with Py26 and Py27 (and is also nice)
-        return dict(zip(nameList, valueList))
+        return dict(list(zip(nameList, valueList)))
     
     def _getAttachmentArgs(self, attachmentfile):
         """ returns dictionary with key/value pairs needed, to transfer 
@@ -1344,7 +1348,7 @@ TL version >= 1.9.11
         try:
             tl_version = self.testLinkVersion()
             tl_about   = self.about()
-        except testlinkerrors.TLConnectionError, msg:
+        except testlinkerrors.TLConnectionError as msg:
             tl_version = msg
             
         message = """
@@ -1371,7 +1375,7 @@ if __name__ == "__main__":
     tl_helper = TestLinkHelper()
     tl_helper.setParamsFromArgs()
     myTestLink = tl_helper.connect(TestlinkAPIGeneric)
-    print myTestLink
+    print(myTestLink)
 
 
 
