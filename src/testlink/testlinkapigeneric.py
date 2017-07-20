@@ -65,8 +65,9 @@ class TestlinkAPIGeneric(object):
         encoding=args.get('encoding')
         verbose=args.get('verbose',0)
         allow_none=args.get('allow_none',0)
+        context=args.get('context',None)
         self.server = xmlrpclib.Server(server_url, transport, encoding,
-                                       verbose, allow_none)
+                                       verbose, allow_none, context=context)
         self.devKey = devKey
         self._server_url = server_url
         self._positionalArgNames = getMethodsWithPositionalArgs()
