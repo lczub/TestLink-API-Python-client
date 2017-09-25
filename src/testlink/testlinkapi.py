@@ -212,7 +212,23 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         return self._copyTC(origTestCaseId, changedAttributes, origVersion,
                             duplicateaction = 'generate_new')
         
-    
+    def getTestCaseByVersion(self, testCaseID, version=None):
+        """
+        Gets testcase information based on the version.
+
+        :param testCaseID: test case to search for
+        :param version: version to search for defaults to None. None searches for latest
+        :return: test case info dictionary
+        """
+        testcases = self.getTestCase(testCaseID, version=version)
+        if version is None:
+            return testcases[0]
+        for testcase in testcases:
+            if str(testcase['version']) == str(version):
+                return testcase
+        else:
+            raise RuntimeError("Testcase {} doesn't have version {}.".format(testCaseID, version))
+
     def _copyTC(self, origTestCaseId, changedArgs, origVersion=None, **options):
         """ creates a copy of test case with id ORIGTESTCASEID
         
@@ -237,7 +253,7 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         """
 
         # get orig test case content 
-        origArgItems = self.getTestCase(origTestCaseId, version=origVersion)[0]
+        origArgItems = self.getTestCaseByVersion(origTestCaseId, version=origVersion)
         # get orig test case project id 
         origArgItems['testprojectid'] = self.getProjectIDByNode(origTestCaseId)
          
