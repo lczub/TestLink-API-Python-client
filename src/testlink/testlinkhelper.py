@@ -77,8 +77,11 @@ class TestLinkHelper(object):
         self._server_url = server_url
         self._devkey     = devkey
         self._proxy      = proxy
+        self._setParams()
+
+    def _setParams(self):
         self._setParamsFromEnv()
-        
+
     def _setParamsFromEnv(self):
         """ fill empty slots from environment variables
         _server_url <- TESTLINK_API_PYTHON_SERVER_URL
