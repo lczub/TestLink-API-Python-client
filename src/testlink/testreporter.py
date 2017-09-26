@@ -6,8 +6,12 @@ class TestReporter(dict):
         """This can be given one or more testcases, but they all must have the same project, plan, and platform."""
         super(TestReporter, self).__init__(*args, **kwargs)
         self.tls = tls
-        self.testcases = testcases
+        # Turn a single testcase
+        self.testcases = testcases if isinstance(testcases, list) else [testcases]
         self._plan_testcases = None
+
+    def setup_testlink(self):
+        pass
 
     def _get_project_name_by_id(self):
         if self.testprojectid:
@@ -64,23 +68,28 @@ class TestReporter(dict):
         return self._plan_testcases
 
 
-class TestGenerateReporter(TestReporter):
-    def __init__(self, tls, testcases=None, *args, **kwargs):
-        super(TestGenerateReporter, self).__init__(tls, testcases, *args, **kwargs)
-        self._testplanname = self._testprojectid = self._testplanid = None
 
+class AddTestMixin(object):
+    """Add testcase to testplan if not added."""
     def setup_testlink(self):
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
         for testcase in self.testcases:
-            if testcase not in self.plan_tc_ext_ids:
+            if testcase not in self.plan_tcids:
                 self.tls.addTestCaseToTestPlan(
                     self.testprojectid, self.testplanid, testcase, self.get_latest_tc_version(testcase),
                     platformid=self.platformid
                 )
 
-    # testprojectname/testprojectid generating aren't supported
+    def get_latest_tc_version(self, testcaseexternalid):
+        return self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version']
+
+
+class AddTestPlanMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(AddTestPlanMixin, self).__init__(*args, **kwargs)
+        self._testplanid = None
 
     @property
     def testplanid(self):
@@ -100,6 +109,8 @@ class TestGenerateReporter(TestReporter):
         self['testplanid'] = tp[0]['id']
         return self['testplanid']
 
+
+class AddPlatformMixin(object):
     @property
     def platformname(self):
         """Return a platformname added to the testplan if there is one."""
@@ -138,16 +149,14 @@ class TestGenerateReporter(TestReporter):
             self.generate_platformname(platformname)
             self.getPlatformID(platformname, projectid, _ran=True)
 
-    @property
-    def plan_tc_ext_ids(self):
-        if not self._plan_testcases:
-            self._plan_testcases = set()
-            tc_dict = self.tls.getTestCasesForTestPlan(self.testplanid)
-            for _, platform in tc_dict.items():
-                for k, v in platform.items():
-                    self._plan_testcases.add(v['full_external_id'])
-        return self._plan_testcases
 
-    def get_latest_tc_version(self, testcaseexternalid):
-        # TODO: Remote his when PR goes through https://github.com/orenault/TestLink-API-Python-client/pull/23
-        return self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version']
+class TestGenerateReporter(AddTestMixin, AddTestPlanMixin, AddPlatformMixin):
+    """This is the default generate everything it can version of test reporting.
+
+    If you don't want to generate one of these values you can 'roll your own' version of this class with only the mixins
+    that you want to generate.
+
+    For example if you wanted to add platforms and/or tests to testplans, but didn't want to ever make a new testplan
+    you could use a class like:
+    `type('MyOrgTestGenReporter', (AddTestMixin, AddPlatformMixin), {})`
+    """
