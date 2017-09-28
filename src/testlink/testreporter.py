@@ -1,17 +1,23 @@
-from .testlinkerrors import TLResponseError
+from testlink.testlinkerrors import TLResponseError
 
 
 class TestReporter(dict):
-    def __init__(self, tls, testcases=None, *args, **kwargs):
+    def __init__(self, tls, testcases, *args, **kwargs):
         """This can be given one or more testcases, but they all must have the same project, plan, and platform."""
         super(TestReporter, self).__init__(*args, **kwargs)
         self.tls = tls
-        # Turn a single testcase
+        # handle single testcase
         self.testcases = testcases if isinstance(testcases, list) else [testcases]
-        self._plan_testcases = None
+        self._plan_testcases = self._testplanid = None
 
     def setup_testlink(self):
-        pass
+        """Call properties that may set report kwarg values."""
+        self.testprojectname
+        self.testprojectid
+        self.testplanid
+        self.testplanname
+        self.platformname
+        self.platformid
 
     def _get_project_name_by_id(self):
         if self.testprojectid:
@@ -49,6 +55,10 @@ class TestReporter(dict):
         return self.get('testplanid')
 
     @property
+    def testplanname(self):
+        return self.get('testplanname')
+
+    @property
     def platformname(self):
         """Return a platformname added to the testplan if there is one."""
         return self.get('platformname')
@@ -67,11 +77,16 @@ class TestReporter(dict):
                     self._plan_testcases.add(v['full_external_id'])
         return self._plan_testcases
 
+    def report(self):
+        self.setup_testlink()
+        for testcase in self.testcases:
+            self.tls.reportTCResult(testcaseexternalid=testcase, **self)
 
 
 class AddTestMixin(object):
     """Add testcase to testplan if not added."""
     def setup_testlink(self):
+        super(AddTestMixin, self).setup_testlink()
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
@@ -87,10 +102,6 @@ class AddTestMixin(object):
 
 
 class AddTestPlanMixin(object):
-    def __init__(self, *args, **kwargs):
-        super(AddTestPlanMixin, self).__init__(*args, **kwargs)
-        self._testplanid = None
-
     @property
     def testplanid(self):
         if not self._testplanid:
@@ -150,7 +161,7 @@ class AddPlatformMixin(object):
             self.getPlatformID(platformname, projectid, _ran=True)
 
 
-class TestGenerateReporter(AddTestMixin, AddTestPlanMixin, AddPlatformMixin):
+class TestGenReporter(AddTestMixin, AddTestPlanMixin, AddPlatformMixin, TestReporter):
     """This is the default generate everything it can version of test reporting.
 
     If you don't want to generate one of these values you can 'roll your own' version of this class with only the mixins
