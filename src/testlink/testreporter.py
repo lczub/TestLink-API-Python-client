@@ -84,10 +84,13 @@ class TestReporter(dict):
         if not self._plan_testcases:
             self._plan_testcases = set()
             tc_dict = self.tls.getTestCasesForTestPlan(self.testplanid)
-            print(tc_dict)
-            for _, platform in tc_dict.items():
-                for k, v in platform.items():
-                    self._plan_testcases.add(v['full_external_id'])
+            try:
+                for _, platform in tc_dict.items():
+                    for k, v in platform.items():
+                        self._plan_testcases.add(v['full_external_id'])
+            except AttributeError:
+                # getTestCasesForTestPlan returns an empty list instead of an empty dict
+                pass
         return self._plan_testcases
 
     def reportgen(self):
@@ -191,6 +194,7 @@ class AddBuildMixin(TestReporter):
         bid = self.get('buildid')
         if not bid or bid not in self.tls.getBuildsForTestPlan(self.testplanid):
             self['buildid'] = self._generate_buildid()
+        return self.get('buildid')
 
     def _generate_buildid(self):
         r = self.tls.createBuild(self.testplanid, self.buildname, self.buildnotes)
