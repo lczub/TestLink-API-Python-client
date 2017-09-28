@@ -8,7 +8,12 @@ class TestReporter(dict):
         self.tls = tls
         # handle single testcase
         self.testcases = testcases if isinstance(testcases, list) else [testcases]
-        self._plan_testcases = self._testplanid = None
+        self._plan_testcases = None
+        self.remove_non_report_kwargs()
+
+    def remove_non_report_kwargs(self):
+        self.buildname = self.pop('buildname')
+        self.buildnotes = self.pop('buildnotes', "Created with automation.")
 
     def setup_testlink(self):
         """Call properties that may set report kwarg values."""
@@ -18,6 +23,7 @@ class TestReporter(dict):
         self.testplanname
         self.platformname
         self.platformid
+        self.buildid
 
     def _get_project_name_by_id(self):
         if self.testprojectid:
@@ -35,8 +41,10 @@ class TestReporter(dict):
         return self._projectname_getter()
 
     def _get_project_id(self):
-        if not self.get('testprojectid') and self.testprojectname:
+        tpid = self.get('testprojectid')
+        if not tpid and self.testprojectname:
             return self.tls.getProjectIDByName(self['testprojectname'])
+        return tpid
 
     def _get_project_id_or_none(self):
         project_id = self._get_project_id()
@@ -68,19 +76,29 @@ class TestReporter(dict):
         return self.get('platformid')
 
     @property
+    def buildid(self):
+        return self.get('buildid')
+
+    @property
     def plan_tcids(self):
         if not self._plan_testcases:
             self._plan_testcases = set()
             tc_dict = self.tls.getTestCasesForTestPlan(self.testplanid)
+            print(tc_dict)
             for _, platform in tc_dict.items():
                 for k, v in platform.items():
                     self._plan_testcases.add(v['full_external_id'])
         return self._plan_testcases
 
-    def report(self):
+    def reportgen(self):
+        """For use if you need to look at the status returns of individual reporting."""
         self.setup_testlink()
         for testcase in self.testcases:
-            self.tls.reportTCResult(testcaseexternalid=testcase, **self)
+            yield self.tls.reportTCResult(testcaseexternalid=testcase, **self)
+
+    def report(self):
+        for _ in self.reportgen():
+            pass
 
 
 class AddTestMixin(object):
@@ -98,18 +116,24 @@ class AddTestMixin(object):
                 )
 
     def get_latest_tc_version(self, testcaseexternalid):
-        return self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version']
+        return int(self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version'])
 
 
 class AddTestPlanMixin(object):
     @property
     def testplanid(self):
-        if not self._testplanid:
+        if not self.get('testplanid'):
             try:
-                self._testplanid = self.tls.getTestPlanByName(self.testprojectname, self.testplanname)[0]['id']
+                self['testplanid'] = self.tls.getTestPlanByName(self.testprojectname, self.testplanname)[0]['id']
+            except TLResponseError as e:
+                # Name does not exist
+                if e.code == 3033:
+                    self['testplanid'] = self.generate_testplanid()
+                else:
+                    raise
             except TypeError:
-                self._testplanid = self.generate_testplanid()
-        return self._testplanid
+                self['testplanid'] = self.generate_testplanid()
+        return self['testplanid']
 
     def generate_testplanid(self):
         """This won't necessarily be able to create a testplanid. It requires a planname and projectname."""
@@ -133,7 +157,7 @@ class AddPlatformMixin(object):
     def generate_platformname(self, platformname):
         if platformname not in self.tls.getTestPlanPlatforms(self.testplanid):
             try:
-                self.tls.createPlatform(self['testplanname'], platformname)
+                self.tls.createPlatform(self['testprojectname'], platformname)
             except TLResponseError as e:
                 if e.code == 12000:
                     # platform already exists
@@ -148,20 +172,32 @@ class AddPlatformMixin(object):
             self['platformid'] = self.getPlatformID(self.platformname, self.testprojectid)
         return self['platformid']
 
-    def getPlatformID(self, platformname, projectid, _ran=False):
+    def getPlatformID(self, platformname, projectid):
         platforms = self.tls.getProjectPlatforms(projectid)
         # key is duplicate info from key 'name' of dictionary
-        for _, platform in platforms.items:
+        for _, platform in platforms.items():
             if platform['name'] == platformname:
                 return platform['id']
         else:
-            if _ran:
-                raise RuntimeError("Couldn't find platformid for {}.{} after creation.".format(projectid, platformname))
-            self.generate_platformname(platformname)
-            self.getPlatformID(platformname, projectid, _ran=True)
+            raise RuntimeError(
+                "Couldn't find platformid for {}.{}, "
+                "please provide a platformname to generate.".format(projectid, platformname)
+            )
 
 
-class TestGenReporter(AddTestMixin, AddTestPlanMixin, AddPlatformMixin, TestReporter):
+class AddBuildMixin(TestReporter):
+    @property
+    def buildid(self):
+        bid = self.get('buildid')
+        if not bid or bid not in self.tls.getBuildsForTestPlan(self.testplanid):
+            self['buildid'] = self._generate_buildid()
+
+    def _generate_buildid(self):
+        r = self.tls.createBuild(self.testplanid, self.buildname, self.buildnotes)
+        return r[0]['id']
+
+
+class TestGenReporter(AddTestMixin, AddBuildMixin, AddTestPlanMixin, AddPlatformMixin, TestReporter):
     """This is the default generate everything it can version of test reporting.
 
     If you don't want to generate one of these values you can 'roll your own' version of this class with only the mixins
@@ -169,5 +205,13 @@ class TestGenReporter(AddTestMixin, AddTestPlanMixin, AddPlatformMixin, TestRepo
 
     For example if you wanted to add platforms and/or tests to testplans, but didn't want to ever make a new testplan
     you could use a class like:
-    `type('MyOrgTestGenReporter', (AddTestMixin, AddPlatformMixin), {})`
+    `type('MyOrgTestGenReporter', (AddTestMixin, AddPlatformMixin, TestReporter), {})`
+
+    Example usage with fake testlink server test and a manual project.
+    ```
+    tls = testlink.TestLinkHelper('https://testlink.corp.com/testlink/lib/api/xmlrpc/v1/xmlrpc.php',
+                                  'devkeyabc123').connect(testlink.TestlinkAPIClient)
+    tgr = TestGenReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
+                          platformname='gend', buildname='8.fake', status='p')
+    ```
     """
