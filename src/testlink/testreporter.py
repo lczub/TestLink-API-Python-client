@@ -104,10 +104,10 @@ class TestReporter(dict):
             pass
 
 
-class AddTestMixin(object):
+class AddTestReporter(TestReporter):
     """Add testcase to testplan if not added."""
     def setup_testlink(self):
-        super(AddTestMixin, self).setup_testlink()
+        super(AddTestReporter, self).setup_testlink()
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
@@ -122,7 +122,7 @@ class AddTestMixin(object):
         return int(self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version'])
 
 
-class AddTestPlanMixin(object):
+class AddTestPlanReporter(TestReporter):
     @property
     def testplanid(self):
         if not self.get('testplanid'):
@@ -148,7 +148,7 @@ class AddTestPlanMixin(object):
         return self['testplanid']
 
 
-class AddPlatformMixin(object):
+class AddPlatformReporter(TestReporter):
     @property
     def platformname(self):
         """Return a platformname added to the testplan if there is one."""
@@ -188,7 +188,7 @@ class AddPlatformMixin(object):
             )
 
 
-class AddBuildMixin(TestReporter):
+class AddBuildReporter(TestReporter):
     @property
     def buildid(self):
         bid = self.get('buildid')
@@ -201,15 +201,15 @@ class AddBuildMixin(TestReporter):
         return r[0]['id']
 
 
-class TestGenReporter(AddTestMixin, AddBuildMixin, AddTestPlanMixin, AddPlatformMixin, TestReporter):
+class TestGenReporter(AddTestReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
     """This is the default generate everything it can version of test reporting.
 
-    If you don't want to generate one of these values you can 'roll your own' version of this class with only the mixins
-    that you want to generate.
+    If you don't want to generate one of these values you can 'roll your own' version of this class with only the
+    needed features that you want to generate.
 
     For example if you wanted to add platforms and/or tests to testplans, but didn't want to ever make a new testplan
     you could use a class like:
-    `type('MyOrgTestGenReporter', (AddTestMixin, AddPlatformMixin, TestReporter), {})`
+    `type('MyOrgTestGenReporter', (AddTestReporter, AddPlatformReporter, TestReporter), {})`
 
     Example usage with fake testlink server test and a manual project.
     ```
