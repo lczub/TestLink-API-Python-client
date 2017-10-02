@@ -113,17 +113,21 @@ class AddTestReporter(TestReporter):
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
-        platform_added = False
+        # Get the platformid if possible or else addition will fail
+        self.platformid
         for testcase in self.testcases:
-            if testcase not in self.plan_tcids:
-                if not platform_added:
-                    # Get the platformid if possible or else addition will fail
-                    self.platformid
-                    platform_added = True
+            # Can't check if testcase is in plan_tcids, because that won't work if it's there, but of the wrong platform
+            try:
                 self.tls.addTestCaseToTestPlan(
                     self.testprojectid, self.testplanid, testcase, self.get_latest_tc_version(testcase),
                     platformid=self.platformid
                 )
+            except TLResponseError as e:
+                # Test Case version is already linked to Test Plan
+                if e.code == 3045:
+                    pass
+                else:
+                    raise
 
     def get_latest_tc_version(self, testcaseexternalid):
         return int(self.tls.getTestCase(None, testcaseexternalid=testcaseexternalid)[0]['version'])
