@@ -190,7 +190,7 @@ class AddPlatformReporter(TestReporter):
         """
         This is hardcoded for platformname to always be self.platformname
         """
-        platforms = self.tls.getProjectPlatforms(projectid)
+        platforms = self.tls.getTestPlanPlatforms(self.testplanid)
         # key is duplicate info from 'name' of dictionary
         for _, platform in platforms.items():
             if platform['name'] == platformname:
