@@ -181,12 +181,12 @@ class AddPlatformReporter(TestReporter):
     @property
     def platformid(self):
         if not self.get('platformid'):
-            self['platformid'] = self.getPlatformID(self.platformname, self.testprojectid)
+            self['platformid'] = self.getPlatformID(self.platformname)
         # This action is idempotent
         self.tls.addPlatformToTestPlan(self.testplanid, self.platformname)
         return self['platformid']
 
-    def getPlatformID(self, platformname, projectid, _firstrun=True):
+    def getPlatformID(self, platformname, _firstrun=True):
         """
         This is hardcoded for platformname to always be self.platformname
         """
@@ -201,13 +201,13 @@ class AddPlatformReporter(TestReporter):
         if not self.platformname:
             raise RuntimeError(
                 "Couldn't find platformid for {}.{}, "
-                "please provide a platformname to generate.".format(projectid, platformname)
+                "please provide a platformname to generate.".format(self.testplanid, platformname)
             )
         if _firstrun is True:
-            return self.getPlatformID(self.platformname, projectid, _firstrun=False)
+            return self.getPlatformID(self.platformname, _firstrun=False)
         else:
-            raise RuntimeError("PlatformID not found after generated from platformname '{}'. Make sure the case used"
-                               " is how testlink accepts it.".format(self.platformname))
+            raise RuntimeError("PlatformID not found after generated from platformname '{}' "
+                               "in test plan {}.".format(self.platformname, self.testplanid))
 
 
 class AddBuildReporter(TestReporter):
