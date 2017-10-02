@@ -112,8 +112,13 @@ class AddTestReporter(TestReporter):
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
+        platform_added = False
         for testcase in self.testcases:
             if testcase not in self.plan_tcids:
+                if not platform_added:
+                    # Get the platformid if possible or else addition will fail
+                    self.platformid
+                    platform_added = True
                 self.tls.addTestCaseToTestPlan(
                     self.testprojectid, self.testplanid, testcase, self.get_latest_tc_version(testcase),
                     platformid=self.platformid
