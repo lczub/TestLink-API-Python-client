@@ -191,12 +191,9 @@ class AddPlatformReporter(TestReporter):
         This is hardcoded for platformname to always be self.platformname
         """
         platforms = self.tls.getTestPlanPlatforms(self.testplanid)
-        # getTestPlanPlatforms returns a dict normally and a list when empty
-        if not isinstance(platforms, list):
-            # key is duplicate info from 'name' of dictionary
-            for _, platform in platforms.items():
-                if platform['name'] == platformname:
-                    return platform['id']
+        for platform in platforms:
+            if platform['name'] == platformname:
+                return platform['id']
         # Platformname houses platform creation as platform creation w/o a name isn't possible
         if not self.platformname:
             raise RuntimeError(
