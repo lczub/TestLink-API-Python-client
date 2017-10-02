@@ -206,8 +206,8 @@ class AddPlatformReporter(TestReporter):
                 return self.getPlatformID(self.platformname, projectid, _firstrun=False)
             else:
                 # TODO: Testlink
-                raise RuntimeError("PlatformID not found after generated from platformname. Make sure the case used is "
-                                   "how testlink accepts it.")
+                raise RuntimeError("PlatformID not found after generated from platformname '{}'. Make sure the case used"
+                                   " is how testlink accepts it.".format(self.platformname))
 
 
 class AddBuildReporter(TestReporter):
