@@ -43,7 +43,8 @@ class TestReporter(dict):
     def _get_project_id(self):
         tpid = self.get('testprojectid')
         if not tpid and self.testprojectname:
-            return self.tls.getProjectIDByName(self['testprojectname'])
+            self['testprojectid'] = self.tls.getProjectIDByName(self['testprojectname'])
+            return self['testprojectid']
         return tpid
 
     def _get_project_id_or_none(self):
@@ -155,37 +156,48 @@ class AddPlatformReporter(TestReporter):
         pn_kwarg = self.get('platformname')
         if pn_kwarg:
             self.generate_platformname(pn_kwarg)
+            self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
         return pn_kwarg
 
     def generate_platformname(self, platformname):
         if platformname not in self.tls.getTestPlanPlatforms(self.testplanid):
             try:
-                self.tls.createPlatform(self['testprojectname'], platformname)
+                self.tls.createPlatform(self.testprojectname, platformname)
             except TLResponseError as e:
+                # platform already exists
                 if e.code == 12000:
-                    # platform already exists
                     pass
                 else:
                     raise
-            self.tls.addPlatformToTestPlan(self.testplanid, platformname)
 
     @property
     def platformid(self):
         if not self.get('platformid'):
             self['platformid'] = self.getPlatformID(self.platformname, self.testprojectid)
+        # This action is idempotent
+        self.tls.addPlatformToTestPlan(self.testplanid, self.platformname)
         return self['platformid']
 
-    def getPlatformID(self, platformname, projectid):
+    def getPlatformID(self, platformname, projectid, _firstrun=True):
+        """
+        This is hardcoded for platformname to always be self.platformname
+        """
         platforms = self.tls.getProjectPlatforms(projectid)
-        # key is duplicate info from key 'name' of dictionary
+        # key is duplicate info from 'name' of dictionary
         for _, platform in platforms.items():
             if platform['name'] == platformname:
                 return platform['id']
         else:
-            raise RuntimeError(
-                "Couldn't find platformid for {}.{}, "
-                "please provide a platformname to generate.".format(projectid, platformname)
-            )
+            # Platformname houses platform creation as platform creation w/o a name isn't possible
+            if not self.platformname:
+                raise RuntimeError(
+                    "Couldn't find platformid for {}.{}, "
+                    "please provide a platformname to generate.".format(projectid, platformname)
+                )
+            if _firstrun is True:
+                return self.getPlatformID(self.platformname, projectid, _firstrun=False)
+            else:
+                raise RuntimeError("PlatformID not found after generated from platformname.")
 
 
 class AddBuildReporter(TestReporter):
