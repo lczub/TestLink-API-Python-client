@@ -87,4 +87,3 @@ setup(name='testlink-api',
       keywords     = ['testing', 'testlink', 'xml-rpc', 'testautomation']
       
      )
-

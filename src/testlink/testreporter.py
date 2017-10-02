@@ -10,6 +10,7 @@ class TestReporter(dict):
         self.testcases = testcases if isinstance(testcases, list) else [testcases]
         self._plan_testcases = None
         self.remove_non_report_kwargs()
+        self._platformname_generated = False
 
     def remove_non_report_kwargs(self):
         self.buildname = self.pop('buildname')
@@ -159,21 +160,19 @@ class AddPlatformReporter(TestReporter):
     def platformname(self):
         """Return a platformname added to the testplan if there is one."""
         pn_kwarg = self.get('platformname')
-        if pn_kwarg:
-            self.generate_platformname(pn_kwarg)
-            self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
-        return pn_kwarg
-
-    def generate_platformname(self, platformname):
-        if platformname not in self.tls.getTestPlanPlatforms(self.testplanid):
+        if pn_kwarg and self._platformname_generated is False:
+            # If we try to create platform and catch platform already exists error (12000) it sometimes duplicates a
+            # platformname
             try:
-                self.tls.createPlatform(self.testprojectname, platformname)
+                self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
             except TLResponseError as e:
-                # platform already exists
-                if e.code == 12000:
-                    pass
+                if int(e.code) == 235:
+                    self.tls.createPlatform(self.testprojectname, pn_kwarg)
+                    self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
                 else:
                     raise
+            self._platformname_generated = True
+        return pn_kwarg
 
     @property
     def platformid(self):
