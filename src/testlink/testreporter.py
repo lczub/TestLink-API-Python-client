@@ -191,23 +191,23 @@ class AddPlatformReporter(TestReporter):
         This is hardcoded for platformname to always be self.platformname
         """
         platforms = self.tls.getTestPlanPlatforms(self.testplanid)
-        # key is duplicate info from 'name' of dictionary
-        for _, platform in platforms.items():
-            if platform['name'] == platformname:
-                return platform['id']
+        # getTestPlanPlatforms returns a dict normally and a list when empty
+        if not isinstance(platforms, list):
+            # key is duplicate info from 'name' of dictionary
+            for _, platform in platforms.items():
+                if platform['name'] == platformname:
+                    return platform['id']
+        # Platformname houses platform creation as platform creation w/o a name isn't possible
+        if not self.platformname:
+            raise RuntimeError(
+                "Couldn't find platformid for {}.{}, "
+                "please provide a platformname to generate.".format(projectid, platformname)
+            )
+        if _firstrun is True:
+            return self.getPlatformID(self.platformname, projectid, _firstrun=False)
         else:
-            # Platformname houses platform creation as platform creation w/o a name isn't possible
-            if not self.platformname:
-                raise RuntimeError(
-                    "Couldn't find platformid for {}.{}, "
-                    "please provide a platformname to generate.".format(projectid, platformname)
-                )
-            if _firstrun is True:
-                return self.getPlatformID(self.platformname, projectid, _firstrun=False)
-            else:
-                # TODO: Testlink
-                raise RuntimeError("PlatformID not found after generated from platformname '{}'. Make sure the case used"
-                                   " is how testlink accepts it.".format(self.platformname))
+            raise RuntimeError("PlatformID not found after generated from platformname '{}'. Make sure the case used"
+                               " is how testlink accepts it.".format(self.platformname))
 
 
 class AddBuildReporter(TestReporter):
