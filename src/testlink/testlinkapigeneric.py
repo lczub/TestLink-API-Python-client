@@ -251,7 +251,7 @@ TL version >= 1.9.11
     @decoMakerApiCallWithArgs(['testsuiteid'], ['deep', 'details', 
                                                 'getkeywords'])
     def getTestCasesForTestSuite(self):
-        """ List test suites within a test plan alphabetically
+        """ List test cases within a test suite alphabetically
         
         details - default is 'simple', 
                   use 'full' if you want to get summary,steps & expected_results
