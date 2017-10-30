@@ -72,7 +72,7 @@ More information about this library can be found on the Wiki_
 
 """[1:-1]
 
-setup(name='TestLink-API-Python-client',
+setup(name='testlink-api',
       version=VERSION,
       description='Python XML-RPC client for TestLink %s' % TL_RELEASE,
       long_description = DESCRIPTION,

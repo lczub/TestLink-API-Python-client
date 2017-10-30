@@ -57,7 +57,7 @@ Installation
 
 Install the latest stable release from PyPI using pip by running
 
-    pip install TestLink-API-Python-client
+    pip install testlink-api
 
 Directory Layout
 ----------------
