@@ -218,23 +218,3 @@ class AddBuildReporter(TestReporter):
     def _generate_buildid(self):
         r = self.tls.createBuild(self.testplanid, self.buildname, self.buildnotes)
         return r[0]['id']
-
-
-class TestGenReporter(AddTestReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
-    """This is the default generate everything it can version of test reporting.
-
-    If you don't want to generate one of these values you can 'roll your own' version of this class with only the
-    needed features that you want to generate.
-
-    For example if you wanted to add platforms and/or tests to testplans, but didn't want to ever make a new testplan
-    you could use a class like:
-    `type('MyOrgTestGenReporter', (AddTestReporter, AddPlatformReporter, TestReporter), {})`
-
-    Example usage with fake testlink server test and a manual project.
-    ```
-    tls = testlink.TestLinkHelper('https://testlink.corp.com/testlink/lib/api/xmlrpc/v1/xmlrpc.php',
-                                  'devkeyabc123').connect(testlink.TestlinkAPIClient)
-    tgr = TestGenReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
-                          platformname='gend', buildname='8.fake', status='p')
-    ```
-    """
