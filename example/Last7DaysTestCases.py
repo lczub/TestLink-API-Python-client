@@ -30,7 +30,7 @@ def iterTCasesfromTProject(api, TProjName, date1, date2):
     """ returns as iterator all test cases of project TPROJTNAME, which are 
     created between DATE1 and DATE2 
     DATE1 and DATE2 must be of type time.struct_time """
-    TProjId = api.getTestProjectByName(TProjName)[0]['id']
+    TProjId = api.getTestProjectByName(TProjName)['id']
     for TSinfo in api.getFirstLevelTestSuitesForTestProject(TProjId):
         TSuiteId = TSinfo['id']
         for TCid in api.getTestCasesForTestSuite(TSuiteId, deep=1,details='only_id'):
