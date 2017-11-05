@@ -1,7 +1,7 @@
 from .testreporter import AddTestCaseReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter
 
 
-class TestGenCaseReporter(AddTestCaseReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
+class TestGenReporter(AddTestCaseReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
     """
     This is the default generate everything it can version of test reporting.
 
@@ -22,7 +22,7 @@ class TestGenCaseReporter(AddTestCaseReporter, AddBuildReporter, AddTestPlanRepo
     ```
     tls = testlink.TestLinkHelper('https://testlink.corp.com/testlink/lib/api/xmlrpc/v1/xmlrpc.php',
                                   'devkeyabc123').connect(testlink.TestlinkAPIClient)
-    tgr = TestGenCaseReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
+    tgr = TestGenReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
                           platformname='gend', buildname='8.fake', status='p')
     ```
     """
