@@ -1,9 +1,34 @@
-from testlink.testlinkerrors import TLResponseError
+#! /usr/bin/python
+# -*- coding: UTF-8 -*-
+
+#  Copyright 2017 Brian-Willams, TestLink-API-Python-client developers
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+# ------------------------------------------------------------------------
+
+
+from testlink.testlinkerrors import TLResponseError, TLArgError
 
 
 class TestReporter(dict):
     def __init__(self, tls, testcases, *args, **kwargs):
-        """This can be given one or more testcases, but they all must have the same project, plan, and platform."""
+        """This can be given one or more testcases, but they all must have the 
+           same project, plan, and platform.
+           
+           TESTCASES must be one or a list of full external testcase id 
+           TLS       must be an instance of TestlinkAPIClient, defining a 
+                     XMLRPC connection to a TestLink Server"""
         super(TestReporter, self).__init__(*args, **kwargs)
         self.tls = tls
         # handle single testcase
@@ -14,7 +39,11 @@ class TestReporter(dict):
 
     def remove_non_report_kwargs(self):
         self.buildname = self.pop('buildname')
-        self.buildnotes = self.pop('buildnotes', "Created with automation.")
+        
+        default_note = "created automatically with {}".format(self.__class__.__name__)
+        self.buildnotes = self.pop('buildnotes', default_note)
+        self.testplannotes = self.pop('testplannotes', default_note)
+        self.platformnotes = self.pop('platformnotes', default_note)
 
     def setup_testlink(self):
         """Call properties that may set report kwarg values."""
@@ -142,19 +171,20 @@ class AddTestPlanReporter(TestReporter):
             except TLResponseError as e:
                 # Name does not exist
                 if e.code == 3033:
-                    self['testplanid'] = self.generate_testplanid()
+                    self['testplanid'] = self._generate_testplanid()
                 else:
                     raise
             except TypeError:
-                self['testplanid'] = self.generate_testplanid()
+                self['testplanid'] = self._generate_testplanid()
         return self['testplanid']
 
-    def generate_testplanid(self):
+    def _generate_testplanid(self):
         """This won't necessarily be able to create a testplanid. It requires a planname and projectname."""
         if 'testplanname' not in self:
-            raise RuntimeError("Need testplanname to generate a testplan for results.")
+            raise TLArgError("Need testplanname to generate a testplan for results.")
 
-        tp = self.tls.createTestPlan(self['testplanname'], self.testprojectname)
+        tp = self.tls.createTestPlan(self['testplanname'], self.testprojectname,
+                                     notes=self.testplannotes)
         self['testplanid'] = tp[0]['id']
         return self['testplanid']
 
@@ -171,7 +201,8 @@ class AddPlatformReporter(TestReporter):
                 self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
             except TLResponseError as e:
                 if int(e.code) == 235:
-                    self.tls.createPlatform(self.testprojectname, pn_kwarg)
+                    self.tls.createPlatform(self.testprojectname, pn_kwarg,
+                                            notes=self.platformnotes)
                     self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
                 else:
                     raise
@@ -196,15 +227,15 @@ class AddPlatformReporter(TestReporter):
                 return platform['id']
         # Platformname houses platform creation as platform creation w/o a name isn't possible
         if not self.platformname:
-            raise RuntimeError(
+            raise TLArgError(
                 "Couldn't find platformid for {}.{}, "
                 "please provide a platformname to generate.".format(self.testplanid, platformname)
             )
         if _firstrun is True:
             return self.getPlatformID(self.platformname, _firstrun=False)
         else:
-            raise RuntimeError("PlatformID not found after generated from platformname '{}' "
-                               "in test plan {}.".format(self.platformname, self.testplanid))
+            raise TLArgError("PlatformID not found after generated from platformname '{}' "
+                             "in test plan {}.".format(self.platformname, self.testplanid))
 
 
 class AddBuildReporter(TestReporter):
