@@ -1,7 +1,7 @@
-from .testreporter import AddTestReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter
+from .testreporter import AddTestCaseReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter
 
 
-class TestGenReporter(AddTestReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
+class TestGenCaseReporter(AddTestCaseReporter, AddBuildReporter, AddTestPlanReporter, AddPlatformReporter, TestReporter):
     """
     This is the default generate everything it can version of test reporting.
 
@@ -16,13 +16,13 @@ class TestGenReporter(AddTestReporter, AddBuildReporter, AddTestPlanReporter, Ad
 
     For example if you wanted to add platforms and/or tests to testplans, but didn't want to ever make a new testplan
     you could use a class like:
-    `type('MyOrgTestGenReporter', (AddTestReporter, AddPlatformReporter, TestReporter), {})`
+    `type('MyOrgTestGenReporter', (AddTestCaseReporter, AddPlatformReporter, TestReporter), {})`
 
     Example usage with fake testlink server test and a manual project.
     ```
     tls = testlink.TestLinkHelper('https://testlink.corp.com/testlink/lib/api/xmlrpc/v1/xmlrpc.php',
                                   'devkeyabc123').connect(testlink.TestlinkAPIClient)
-    tgr = TestGenReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
+    tgr = TestGenCaseReporter(tls, ['TEST-123'], testprojectname='MANUALLY_MADE_PROJECT', testplanname='generated',
                           platformname='gend', buildname='8.fake', status='p')
     ```
     """

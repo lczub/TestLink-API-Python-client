@@ -106,10 +106,10 @@ class TestReporter(dict):
             pass
 
 
-class AddTestReporter(TestReporter):
+class AddTestCaseReporter(TestReporter):
     """Add testcase to testplan if not added."""
     def setup_testlink(self):
-        super(AddTestReporter, self).setup_testlink()
+        super(AddTestCaseReporter, self).setup_testlink()
         self.ensure_testcases_in_plan()
 
     def ensure_testcases_in_plan(self):
