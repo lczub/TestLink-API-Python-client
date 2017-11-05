@@ -227,7 +227,7 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
             if str(testcase['version']) == str(version):
                 return testcase
         else:
-            raise RuntimeError("Testcase {} doesn't have version {}.".format(testCaseID, version))
+            raise TLArgError("Testcase {} doesn't have version {}.".format(testCaseID, version))
 
     def _copyTC(self, origTestCaseId, changedArgs, origVersion=None, **options):
         """ creates a copy of test case with id ORIGTESTCASEID
