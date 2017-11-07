@@ -56,7 +56,7 @@ Update Jan. 2014, L. Czub - examples for v0.4.7 api and service extensions added
                                     
 """                                       
 from __future__ import print_function
-from testlink import TestlinkAPIClient, TestLinkHelper
+from testlink import TestlinkAPIClient, TestLinkHelper, TestGenReporter
 from testlink.testlinkerrors import TLResponseError
 import sys, os.path
 from platform import python_version  
@@ -88,9 +88,11 @@ myPyVersionShort = myPyVersion.replace('.', '')[:2]
 NEWTESTPLAN_A="TestPlan_API A"
 NEWTESTPLAN_B="TestPlan_API B"
 NEWTESTPLAN_C="TestPlan_API C - DeleteTest"
+NEWTESTPLAN_G="TestPlan_API G - generated"
 NEWPLATFORM_A='Big Birds %s' % myPyVersionShort
 NEWPLATFORM_B='Small Birds'
 NEWPLATFORM_C='Ugly Birds'
+NEWPLATFORM_G='generated Birds'
 NEWTESTSUITE_A="A - First Level"
 NEWTESTSUITE_B="B - First Level"
 NEWTESTSUITE_AA="AA - Second Level"
@@ -101,6 +103,7 @@ NEWBUILD_A='%s' % myApiVersion
 NEWBUILD_B='%s' % myApiVersion
 NEWBUILD_C='%s - DeleteTest' % myApiVersion
 NEWBUILD_D='%s - copyTestersTest' % myApiVersion
+NEWBUILD_G='%s - generated' % myApiVersion
 
 this_file_dirname=os.path.dirname(__file__)
 NEWATTACHMENT_PY= os.path.join(this_file_dirname, 'TestLinkExample.py')
@@ -710,6 +713,14 @@ response = myTestLink.copyTCnewVersion(newTestCaseID_B,
                 summary='new version of TC B', importance='1')
 print('copyTCnewVersion', response)
 
+# get the different TC versions
+response = myTestLink.getTestCaseByVersion(newTestCaseID_B, 1)
+print('getTestCaseByVersion v1', response)
+response = myTestLink.getTestCaseByVersion(newTestCaseID_B, 2)
+print('getTestCaseByVersion v2', response)
+response = myTestLink.getTestCaseByVersion(newTestCaseID_B)
+print('getTestCaseByVersion vNone', response)
+
 # copy test case - as new TC in a different TestSuite
 print("copy TC B as TC BA into Test suite A")
 response = myTestLink.copyTCnewTestCase(newTestCaseID_B, 
@@ -728,6 +739,15 @@ print('getTestCasesForTestSuite A', response)
 #                                             tc_b_full_ext_id, tc_version+1,
 #                                             overwrite=1)
 # print("addTestCaseToTestPlan overwrite", response)
+
+# sample, how to use TestGenReporter for adding test case result for test plans,
+# test builds, which are not yet defined
+tgr = TestGenReporter(myTestLink, [tc_aa_full_ext_id, tc_b_full_ext_id], 
+                testprojectname=NEWPROJECT, 
+                testplanname=NEWTESTPLAN_G, platformname=NEWPLATFORM_G, 
+                buildname=NEWBUILD_G, status='p')
+tgr.report()
+print("TestPlan, Build, Platform generated with reporting TC results", tgr )
 
 
 print("")

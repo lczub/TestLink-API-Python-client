@@ -87,4 +87,3 @@ setup(name='TestLink-API-Python-client',
       keywords     = ['testing', 'testlink', 'xml-rpc', 'testautomation']
       
      )
-

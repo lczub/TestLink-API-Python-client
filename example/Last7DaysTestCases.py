@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2011-2012 Olivier Renault, James Stock, TestLink-API-Python-client developers
+#  Copyright 2011-2017 Olivier Renault, James Stock, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ def iterTCasesfromTProject(api, TProjName, date1, date2):
     """ returns as iterator all test cases of project TPROJTNAME, which are 
     created between DATE1 and DATE2 
     DATE1 and DATE2 must be of type time.struct_time """
-    TProjId = api.getTestProjectByName(TProjName)[0]['id']
+    TProjId = api.getTestProjectByName(TProjName)['id']
     for TSinfo in api.getFirstLevelTestSuitesForTestProject(TProjId):
         TSuiteId = TSinfo['id']
         for TCid in api.getTestCasesForTestSuite(TSuiteId, deep=1,details='only_id'):

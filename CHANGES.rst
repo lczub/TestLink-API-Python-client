@@ -5,6 +5,24 @@ TestLink-API-Python-client v0.6.5 (under develop)
 -------------------------------------------------
 support for TL 1.9.17 future release and py27, py34, py35 and py36
 
+TestReporter and other improvements pull request #94
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+pull request by Brian-Williams:
+
+- TestReporter's subclasses can be used to idempotently generate required 
+  components of testlink before sending the report to a specified testcase.
+- TestGenReporter is a default combination of all the TestReporter's subclasses 
+  and will try to generate everything it's subclasses is capable of.
+- Added TestLinkHelper._setParams to simplify libraries that need to overwrite 
+  how a helper aquires it's parameters
+- Added TestlinkAPIClient.getTestCaseByVersion to expose the common need of 
+  gettting the latest testcase by default. It was already used, but not a 
+  function in this class and has uses elsewhere.
+
+`<example/TestLinkExample.py>`_  includes sample, how to use 
+TestGenReporter and TestlinkAPIClient.getTestCaseByVersion
+
 Self signed / Let's Encrypt SSL certificate support #90
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
