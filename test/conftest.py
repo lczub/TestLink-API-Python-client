@@ -37,31 +37,40 @@ def attachmentFile():
     yield aFile
     aFile.close()
     
+@pytest.fixture(scope='session')
+def api_helper_class():
+    return TestLinkHelper
+    
     
 @pytest.fixture(scope='session')
-def api_generic_client():
+def api_generic_client(api_helper_class):
     ''' Init TestlinkAPIGeneric Client with connection parameters defined in 
         environment variables
         TESTLINK_API_PYTHON_DEVKEY and TESTLINK_API_PYTHON_DEVKEY
     ''' 
-    return TestLinkHelper().connect(TestlinkAPIGeneric)
+    return api_helper_class().connect(TestlinkAPIGeneric)
 
 @pytest.fixture(scope='session')
-def api_general_client():
+def api_general_client(api_helper_class):
     ''' Init TestlinkAPIClient Client with connection parameters defined in 
         environment variables
         TESTLINK_API_PYTHON_DEVKEY and TESTLINK_API_PYTHON_DEVKEY
     ''' 
-    return TestLinkHelper().connect(TestlinkAPIClient)
+    return api_helper_class().connect(TestlinkAPIClient)
 
 @pytest.fixture(scope='session', params=[TestlinkAPIGeneric, TestlinkAPIClient])
-def api_client(request):
-    ''' Init Testlink API Client class defined in fixtures parameter list with
+def api_client_class(request):
+    ''' all variations of Testlink API Client classes  ''' 
+    return request.param
+
+@pytest.fixture(scope='session')
+def api_client(api_client_class, api_helper_class):
+    ''' Init Testlink API Client class defined in fixtures api_client_class with
         connection parameters defined in environment variables
         TESTLINK_API_PYTHON_DEVKEY and TESTLINK_API_PYTHON_DEVKEY
         
         Tests will be call for each Testlink API Client class, defined in 
         fixtures parameter list
     ''' 
-    return TestLinkHelper().connect(request.param)
+    return api_helper_class().connect(api_client_class)
 

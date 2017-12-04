@@ -21,59 +21,43 @@
 # are defined in environment variables
 #     TESTLINK_API_PYTHON_SERVER_URL and TESTLINK_API_PYTHON_DEVKEY
 
-import unittest
-from testlink import TestlinkAPIClient, TestLinkHelper
+import pytest
 from testlink import testlinkerrors
 
+def test_callServer_noArgs(api_client):
+    """ test _callServer() - calling method with no args """
+    
+    assert 'Hello!' == api_client._callServer('sayHello')
 
-class TestLinkAPIcallServerTestCase(unittest.TestCase):
-    """ TestCases for TestLinkAPICleint._callServer()  """
+def test_callServer_withArgs(api_client):
+    """ test _callServer() - calling method with args """
+    
+    assert 'You said: some arg' == api_client._callServer('repeat', {'str': 'some arg'})
 
-    def test_callServer_noArgs(self):
-        """ test _callServer() - calling method with no args """
-        
-        client = TestLinkHelper().connect(TestlinkAPIClient)
-        response = client._callServer('sayHello')
-        self.assertEqual('Hello!', response)
+def test_callServer_ProtocolError(api_client_class, api_helper_class):
+    """ test _callServer() - Server raises ProtocollError """
+     
+    server_url = api_helper_class()._server_url
+    bad_server_url = server_url.split('xmlrpc.php')[0] 
+    api_client = api_helper_class(bad_server_url).connect(api_client_class)
 
-    def test_callServer_withArgs(self):
-        """ test _callServer() - calling method with args """
-        
-        client = TestLinkHelper().connect(TestlinkAPIClient)
-        response = client._callServer('repeat', {'str': 'some arg'})
-        self.assertEqual('You said: some arg', response)
+    with pytest.raises(testlinkerrors.TLConnectionError, 
+                       match='ProtocolError'):
+        api_client._callServer('sayHello')
 
-    def test_callServer_ProtocolError(self):
-        """ test _callServer() - Server raises ProtocollError """
-        
-        server_url = TestLinkHelper()._server_url
-        bad_server_url = server_url.split('xmlrpc.php')[0] 
-        client = TestLinkHelper(bad_server_url).connect(TestlinkAPIClient)
+def test_callServer_socketError(api_client_class, api_helper_class):
+    """ test _callServer() - Server raises a socket Error (getaddrinfo failed) """
+     
+    bad_server_url = 'http://111.222.333.4/testlink/lib/api/xmlrpc.php' 
+    api_client = api_helper_class(bad_server_url).connect(api_client_class)
 
-        def a_func(api_client):
-            api_client._callServer('sayHello')
-        self.assertRaises(testlinkerrors.TLConnectionError, a_func, client)
+    with pytest.raises(testlinkerrors.TLConnectionError, 
+                       match='getaddrinfo failed'):
+        api_client._callServer('sayHello')
 
-    def test_callServer_socketError(self):
-        """ test _callServer() - Server raises a socket Error (IOError) """
-        
-        bad_server_url = 'http://111.222.333.4/testlink/lib/api/xmlrpc.php' 
-        client = TestLinkHelper(bad_server_url).connect(TestlinkAPIClient)
+def test_callServer_FaultError(api_client):
+    """ test _callServer() - Server raises Fault Error """
+     
+    with pytest.raises(testlinkerrors.TLAPIError):
+        api_client._callServer('sayGoodBye')
 
-        def a_func(api_client):
-            api_client._callServer('sayHello')
-        self.assertRaises(testlinkerrors.TLConnectionError, a_func, client)
-
-    def test_callServer_FaultError(self):
-        """ test _callServer() - Server raises Fault Error """
-        
-        client = TestLinkHelper().connect(TestlinkAPIClient)
-
-        def a_func(api_client):
-            api_client._callServer('sayGoodBye')
-        self.assertRaises(testlinkerrors.TLAPIError, a_func, client)
-
-
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
