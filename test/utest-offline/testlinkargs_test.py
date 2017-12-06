@@ -20,132 +20,103 @@
 # this test works WITHOUT an online TestLink Server
 # no calls are send to a TestLink Server
 
-import sys
-
-if sys.version_info[0] == 2 and sys.version_info[1] == 6:
-    # py26 needs backport unittest2
-    import unittest2 as unittest
-else:
-    import unittest
-
-if sys.version_info[0] == 2 and sys.version_info[1] == 7:
-    # py27 and py31 assertRaisesRegexp was renamed in py32 to assertRaisesRegex
-    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
-
+import pytest
 # from testlink.testlinkapigeneric import testlinkargs
 from testlink import testlinkargs
 
+@pytest.fixture()
+def args_register():
+    """ reset singelton testlinkargs before and after the test """
+    testlinkargs._resetRegister()
+    yield testlinkargs
+    testlinkargs._resetRegister()
 
-class testlinkargsTestCase(unittest.TestCase):
-    """ TestCases for module testlinkargs """
-    
-    def setUp(self):
-        """ backup TestLinkHelper related environment variables """
+def test__resetRegister(args_register):
+    args_register._apiMethodsArgs['BigBird'] = 'not a Small Bird'
+    assert None != args_register._apiMethodsArgs.get('BigBird')
+    args_register._resetRegister()
+    assert None == args_register._apiMethodsArgs.get('BigBird')
+
+
+def test_registerMethod(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'], 
+                                 ['quad','tre'], ['cinque'])
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def == (['Uno', 'due', 'tre'], ['Uno', 'due', 'tre', 'quad'], 
+                     ['cinque'])
+ 
+def test_registerMethod_noArgs(args_register):
+    args_register.registerMethod('DummyMethod')
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def == ([], [], [])
+     
+def test_registerMethod_onlyArgsOptional(args_register):
+    args_register.registerMethod('DummyMethod', apiArgsOptional=['quad','tre'])
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def == ([], ['quad','tre'], [])
+     
+def test_registerMethod_onlyArgsPositional(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'])
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def == (['Uno', 'due', 'tre'], ['Uno', 'due', 'tre'], []) 
+     
+def test_getMethodsWithPositionalArgs(args_register):
+    args_register.registerMethod('Method_3pos_0opt', ['Uno', 'due', 'tre']) 
+    args_register.registerMethod('Method_0pos_2opt', [], ['Uno', 'due'])        
+    args_register.registerMethod('Method_1pos_2opt',  ['Uno'], ['due', 'tre']) 
+    a_def = args_register.getMethodsWithPositionalArgs()
+    assert a_def == {'Method_3pos_0opt' : ['Uno', 'due', 'tre'],
+                     'Method_1pos_2opt' : ['Uno']}
+     
+def test_registerMethod_ErrorAlreadyDefined(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
+                                 ['quad','tre'], ['cinque'])
+    with pytest.raises(testlinkargs.TLArgError,
+                       match='DummyMethod already registered'):
+        args_register.registerMethod('DummyMethod')
+         
+def test_registerArgOptional(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
+                                 ['quad','tre'], ['cinque'])
+    args_register.registerArgOptional('DummyMethod', 'sei')
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def  == (['Uno', 'due', 'tre'],
+                      ['Uno', 'due', 'tre', 'quad', 'sei'], ['cinque'])
+ 
+def test_registerArgOptional_ErrorUnknownMethod(args_register):
+    with pytest.raises(testlinkargs.TLArgError, 
+                       match='DummyMethod not registered'):
+        args_register.registerArgOptional('DummyMethod', 'sei')
+ 
+def test_registerArgNonApi(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],
+                                 ['quad','tre'], ['cinque'])
+    args_register.registerArgNonApi('DummyMethod', 'sei')
+    a_def = args_register._apiMethodsArgs['DummyMethod']
+    assert a_def  == (['Uno', 'due', 'tre'], ['Uno', 'due', 'tre', 'quad'],
+                      ['cinque', 'sei'])
+     
+def test_getArgsForMethod_onlyOptionalArgs(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'], 
+                                 ['quad','tre'])
+    response = args_register.getArgsForMethod('DummyMethod')
+    assert  response == (['Uno', 'due', 'tre', 'quad'], [])
+     
+def test_getArgsForMethod_OptionalAndPositionalArgs(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
+                                 ['quad','tre']) 
+    response = args_register.getArgsForMethod('DummyMethod', ['Uno', 'quad'])
+    assert  response == (['due', 'tre'], [])
+ 
+def test_getArgsForMethod_nonApiArgs(args_register):
+    args_register.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
+                                 ['quad','tre'], ['cinque'])
+    response = args_register.getArgsForMethod('DummyMethod', 
+                                              ['Uno', 'due', 'tre'])
+    assert  response == (['quad'], ['cinque']) 
+ 
+def test_getArgsForMethod_unknownMethods(args_register):
+    with pytest.raises(testlinkargs.TLArgError, 
+                       match='unknownMethod not registered'):
+        args_register.getArgsForMethod('unknownMethod')
         
-        # module under test
-        self.mut = testlinkargs
-        # reset the args cache
-        self.mut._resetRegister()
-        # api simulation
-        self.api = self 
-
-    def tearDown(self):
-        # reset the args cache
-        self.mut._resetRegister()
-
-    def test__resetRegister(self):
-        self.mut._apiMethodsArgs['BigBird'] = 'not a Small Bird'
-        self.assertIsNotNone(self.mut._apiMethodsArgs.get('BigBird'))
-        self.mut._resetRegister()
-        self.assertIsNone(self.mut._apiMethodsArgs.get('BigBird'))
-
-    def test_registerMethod(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'], ['cinque'])
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual((['Uno', 'due', 'tre'], ['Uno', 'due', 'tre', 'quad'],
-                          ['cinque']), a_def )
-
-    def test_registerMethod_noArgs(self):
-        self.mut.registerMethod('DummyMethod')
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual(([], [], []), a_def )
-        
-    def test_registerMethod_onlyArgsOptional(self):
-        self.mut.registerMethod('DummyMethod', apiArgsOptional=['quad','tre'])
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual(([], ['quad','tre'], []), a_def )
-        
-    def test_registerMethod_onlyArgsPositional(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'])
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual((['Uno', 'due', 'tre'], ['Uno', 'due', 'tre'], []), 
-                         a_def )
-        
-    def test_getMethodsWithPositionalArgs(self):
-        self.mut.registerMethod('Method_3pos_0opt', ['Uno', 'due', 'tre']) 
-        self.mut.registerMethod('Method_0pos_2opt', [], ['Uno', 'due'])        
-        self.mut.registerMethod('Method_1pos_2opt',  ['Uno'], ['due', 'tre']) 
-        a_def = self.mut.getMethodsWithPositionalArgs()
-        self.assertEqual({'Method_3pos_0opt' : ['Uno', 'due', 'tre'],
-                          'Method_1pos_2opt' : ['Uno']}, 
-                         a_def )
-        
-    def test_registerMethod_ErrorAlreadyDefined(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'], ['cinque'])
-        with self.assertRaisesRegex(testlinkargs.TLArgError, 
-                                     'DummyMethod already registered'):
-            self.mut.registerMethod('DummyMethod')
-            
-    def test_registerArgOptional(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'], ['cinque'])
-        self.mut.registerArgOptional('DummyMethod', 'sei')
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual((['Uno', 'due', 'tre'], 
-                          ['Uno', 'due', 'tre', 'quad', 'sei'],
-                          ['cinque']), a_def )
-
-    def test_registerArgOptional_ErrorUnknownMethod(self):
-        with self.assertRaisesRegex(testlinkargs.TLArgError, 
-                                     'DummyMethod not registered'):
-            self.mut.registerArgOptional('DummyMethod', 'sei')
-
-    def test_registerArgNonApi(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'], ['cinque'])
-        self.mut.registerArgNonApi('DummyMethod', 'sei')
-        a_def = self.mut._apiMethodsArgs['DummyMethod']
-        self.assertEqual((['Uno', 'due', 'tre'], 
-                          ['Uno', 'due', 'tre', 'quad'],
-                          ['cinque', 'sei']), a_def )
-        
-    def test_getArgsForMethod_onlyOptionalArgs(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'])
-        response = self.mut.getArgsForMethod('DummyMethod')
-        self.assertEqual(response, (['Uno', 'due', 'tre', 'quad'], []) )
-        
-    def test_getArgsForMethod_OptionalAndPositionalArgs(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre']) 
-        response = self.mut.getArgsForMethod('DummyMethod', ['Uno', 'quad'])
-        self.assertEqual(response, (['due', 'tre'], []) )
-
-    def test_getArgsForMethod_nonApiArgs(self):
-        self.mut.registerMethod('DummyMethod', ['Uno', 'due', 'tre'],  
-                                ['quad','tre'], ['cinque'])
-        response = self.mut.getArgsForMethod('DummyMethod', 
-                                             ['Uno', 'due', 'tre'])
-        self.assertEqual(response,  (['quad'], ['cinque']) )
-
-    def test_getArgsForMethod_unknownMethods(self):
-        with self.assertRaisesRegex(testlinkargs.TLArgError, 
-                                     'unknownMethod not registered'):
-            self.mut.getArgsForMethod('unknownMethod')
-        
-
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
