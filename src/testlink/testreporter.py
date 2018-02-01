@@ -173,9 +173,9 @@ class AddPlatformReporter(TestReporter):
                 if int(e.code) == 235:
                     self.tls.createPlatform(self.testprojectname, pn_kwarg)
                     self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
+                    self._platformname_generated = True
                 else:
                     raise
-            self._platformname_generated = True
         return pn_kwarg
 
     @property
@@ -198,7 +198,7 @@ class AddPlatformReporter(TestReporter):
         if not self.platformname:
             raise RuntimeError(
                 "Couldn't find platformid for {}.{}, "
-                "please provide a platformname to generate.".format(self.testplanid, platformname)
+                "please provide a platformname to generate.".format(self.testplanid, self.platformname)
             )
         if _firstrun is True:
             return self.getPlatformID(self.platformname, _firstrun=False)
