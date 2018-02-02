@@ -192,7 +192,8 @@ class AddPlatformReporter(TestReporter):
         """
         platforms = self.tls.getTestPlanPlatforms(self.testplanid)
         for platform in platforms:
-            if platform['name'] == platformname:
+            # https://github.com/Brian-Williams/TestLink-API-Python-client/issues/1
+            if platform['name'].lower() == platformname.lower():
                 return platform['id']
         # Platformname houses platform creation as platform creation w/o a name isn't possible
         if not self.platformname:
