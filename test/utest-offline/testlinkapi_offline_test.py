@@ -569,14 +569,6 @@ class TestLinkAPIOfflineTestCase(unittest.TestCase):
         self.assertEqual(self.api.devKey, self.api.callArgs['devKey'])
         self.assertEqual('a login name', self.api.callArgs['user'])
         
-    def test_whatArgs_reportTCResult(self):
-        argsDescription = self.api.whatArgs('reportTCResult')
-        self.assertIn('user=<user>', argsDescription)
-        self.assertIn('execduration=<execduration>', argsDescription)
-        self.assertIn('timestamp=<timestamp>', argsDescription)
-        self.assertIn('steps=<steps>', argsDescription)
-        self.assertIn("[{'step_number' : 6,", argsDescription)
-
     def test_getTestCasesForTestSuite_keyWords(self):
         self.api.loadScenario(SCENARIO_KEYWORDS)
         response = self.api.getTestCasesForTestSuite('deepFalse3', False, 
@@ -584,10 +576,6 @@ class TestLinkAPIOfflineTestCase(unittest.TestCase):
         self.assertIn('keywords', response[0])
         self.assertNotIn('keywords', response[2])
         self.assertEqual(self.api.devKey, self.api.callArgs['devKey'])
-
-    def test_whatArgs_getTestCasesForTestSuite(self):
-        argsDescription = self.api.whatArgs('getTestCasesForTestSuite')
-        self.assertIn('getkeywords=<getkeywords>', argsDescription)
 
     def test_listKeywordsForTC_FullExternalId(self):
         self.api.loadScenario(SCENARIO_KEYWORDS)
@@ -649,32 +637,6 @@ class TestLinkAPIOfflineTestCase(unittest.TestCase):
         self.assertEqual({'8144': set(['KeyWord01', 'KeyWord03']),
                           '8159': set(['KeyWord02']), '8169': set()}, set_response)
 
-    def test_whatArgs_getLastExecutionResult(self):
-        argsDescription = self.api.whatArgs('getLastExecutionResult')
-        self.assertIn('options=<options>', argsDescription)
-        self.assertIn('getBugs', argsDescription)
-
-    def test_whatArgs_createTestCase(self):
-        argsDescription = self.api.whatArgs('createTestCase')
-        self.assertIn('<testcasename>,', argsDescription)
-        self.assertIn('<testsuiteid>,', argsDescription)
-        self.assertIn('<testprojectid>,', argsDescription)
-        self.assertIn('<authorlogin>,', argsDescription)
-        self.assertIn('<summary>,', argsDescription)
-        #self.assertIn('<steps>,', argsDescription)
-        self.assertIn('preconditions=<preconditions>', argsDescription)
-        self.assertIn('importance=<importance>', argsDescription)
-        self.assertIn('executiontype=<executiontype>', argsDescription)
-        self.assertIn('order=<order>', argsDescription)
-        self.assertIn('internalid=<internalid>', argsDescription)
-        self.assertIn('checkduplicatedname=<checkduplicatedname>', argsDescription)
-        self.assertIn('actiononduplicatedname=<actiononduplicatedname>', argsDescription)
-        self.assertIn('status=<status>', argsDescription)
-        self.assertIn('estimatedexecduration=<estimatedexecduration>', argsDescription)
-        self.assertIn('executiontype, order', argsDescription)
-        self.assertIn('status, estimatedexecduration', argsDescription)
-        self.assertIn('steps=<steps>', argsDescription)
-
     def test_connect_with_proxy(self):
         """ create a TestLink API dummy with ProxiedTransport"""
         self.api = DummyAPIClient('http://SERVER-URL-71', 'DEVKEY-71', 
@@ -685,83 +647,6 @@ class TestLinkAPIOfflineTestCase(unittest.TestCase):
             # -> so no access to attribute __transport with Py26
             self.assertEqual('PROXY-71', self.api.server.__call__('transport'))        
 
-    def test_whatArgs_createTestPlan(self):
-        argsDescription = self.api.whatArgs('createTestPlan')
-        self.assertIn('prefix=<prefix>', argsDescription)
-        self.assertIn('testprojectname=<testprojectname>', argsDescription)
-
-    def test_whatArgs_getTestSuite(self):
-        argsDescription = self.api.whatArgs('getTestSuite')
-        self.assertIn('<testsuitename>, <prefix>', argsDescription)
-        
-    def test_whatArgs_updateTestSuite(self):
-        argsDescription = self.api.whatArgs('updateTestSuite')
-        self.assertIn('<testsuiteid>,', argsDescription)
-        self.assertIn('testprojectid=<testprojectid>', argsDescription)
-        self.assertIn('prefix=<prefix>', argsDescription)
-        self.assertIn('parentid=<parentid>', argsDescription)
-        self.assertIn('testsuitename=<testsuitename>', argsDescription)
-        self.assertIn('details=<details>', argsDescription)
-        self.assertIn('order=<order>', argsDescription)
-        
-    def test_whatArgs_createBuild(self):
-        argsDescription = self.api.whatArgs('createBuild')
-        self.assertIn('<testplanid>,', argsDescription)
-        self.assertIn('<buildname>,', argsDescription)
-        self.assertIn('buildnotes>,', argsDescription)
-        self.assertIn('active=<active>', argsDescription)
-        self.assertIn('open=<open>', argsDescription)
-        self.assertIn('releasedate=<releasedate>', argsDescription)
-        self.assertIn('copytestersfrombuild=<copytestersfrombuild>', argsDescription)
-
-    def test_whatArgs_addTestCaseToTestPlan(self):
-        argsDescription = self.api.whatArgs('addTestCaseToTestPlan')
-        self.assertIn('<testprojectid>,', argsDescription)
-        self.assertIn('<testplanid>,', argsDescription)
-        self.assertIn('<testcaseexternalid>,', argsDescription)
-        self.assertIn('<version>,', argsDescription)
-        self.assertIn('platformid=<platformid>', argsDescription)
-        self.assertIn('executionorder=<executionorder>', argsDescription)
-        self.assertIn('urgency=<urgency>', argsDescription)
-        self.assertIn('overwrite=<overwrite>', argsDescription)
-               
-    def test_whatArgs_createTestProject(self):
-        argsDescription = self.api.whatArgs('createTestProject')
-        self.assertIn('<testprojectname>,', argsDescription)
-        self.assertIn('<testcaseprefix>,', argsDescription)
-        self.assertIn('notes=<notes>', argsDescription)
-        self.assertIn('active=<active>', argsDescription)
-        self.assertIn('public=<public>', argsDescription)
-        self.assertIn('options=<options>', argsDescription)
-        self.assertIn('itsname=<itsname>', argsDescription)
-        self.assertIn('itsenabled=<itsenabled>', argsDescription)
-
-    def test_whatArgs_getIssueTrackerSystem(self):
-        argsDescription = self.api.whatArgs('getIssueTrackerSystem')
-        self.assertIn('<itsname>,', argsDescription)
-
-    def test_whatArgs_getExecutionSet(self):
-        argsDescription = self.api.whatArgs('getExecutionSet')
-        self.assertIn('<testplanid>,', argsDescription)
-        self.assertIn('testcaseid=<testcaseid>', argsDescription)
-        self.assertIn('testcaseexternalid=<testcaseexternalid>', argsDescription)
-        self.assertIn('buildid=<buildid>', argsDescription)
-        self.assertIn('buildname=<buildname>', argsDescription)
-        self.assertIn('platformid=<platformid>', argsDescription)
-        self.assertIn('platformname=<platformname>', argsDescription)
-        self.assertIn('options=<options>', argsDescription)
-        
-    def test_whatArgs_getRequirements(self):
-        argsDescription = self.api.whatArgs('getRequirements')
-        self.assertIn('<testprojectid>,', argsDescription)
-        self.assertIn('testplanid=<testplanid>', argsDescription)
-        self.assertIn('platformid=<platformid>', argsDescription)
-        
-    def test_whatArgs_getReqCoverage(self):
-        argsDescription = self.api.whatArgs('getReqCoverage')
-        self.assertIn('<testprojectid>,', argsDescription)
-        self.assertIn('<requirementdocid>,', argsDescription)
-        
     def test_connect_with_use_datetime(self):
         """ create a TestLink Generic API dummy with use_datetime"""
         self.api = DummyAPIClient('http://SERVER-URL-71', 'DEVKEY-71', 
