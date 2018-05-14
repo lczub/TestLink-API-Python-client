@@ -1808,7 +1808,7 @@ TL version >= 1.9.11
         mandatory arg: testplanid - identifies the test plan 
         
         mandatory args variations: testcaseid - testcaseexternalid
-        - test caset information is general mandatory
+        - test case information is general mandatory
 
         optional args variations:  buildid - buildname
                                    platformid - platformname
@@ -1913,6 +1913,67 @@ TL version >= 1.9.11
         """ Gets attachments for specified test suite.
         The attachment file content is Base64 encoded. To save the file to disk 
         in client, Base64 decode the content and write file in binary mode.  """
+
+#  /**
+#    * Gets ALL EXECUTIONS for a particular testcase on a test plan.
+#    * If there are no filter criteria regarding platform and build,
+#    * result will be get WITHOUT checking for a particular platform and build.
+#    *
+#    * @param struct $args
+#    * @param string $args["devKey"]
+#    * @param int $args["tplanid"]
+#    * @param int $args["testcaseid"]: Pseudo optional.
+#    *                                 if does not is present then testcaseexternalid MUST BE present
+#    *
+#    * @param int $args["testcaseexternalid"]: Pseudo optional.
+#    *                                         if does not is present then testcaseid MUST BE present
+#    *
+#    * @param string $args["platform_id"]: optional.
+#    *                                    will be analized ONLY if present and exists
+#    *
+#    * @param int $args["build_id"]: optional
+#    *                               will be analized ONLY if present and exists
+#    *
+#    * @param int $args["options"] - optional
+#    *                               options['getBugs'] = true / false
+#    *
+#    *
+#    * @return mixed $resultInfo
+#    *               if executions found
+#    *               array that contains a map for each execution with these keys:
+#    *               id (execution id),build_id,tester_id,execution_ts,
+#    *               status,testplan_id,tcversion_id,tcversion_number,
+#    *               execution_type,notes.
+#    *
+#    *               If user has requested getbugs, then a key bugs (that is an array)
+#    *               will also exists.
+#    *
+#    *               if test case has not been execute, the first map will be returned with -1 as 'id'
+#    *
+#    * @access public
+#    */
+#     public function getAllExecutionsResults($args)
+
+    @decoApiCallAddDevKey
+    @decoMakerApiCallWithArgs(['testplanid'],
+                        ['testcaseid', 'testcaseexternalid', 
+                         'platformid', 'buildid', 'options'])
+    def getAllExecutionsResults(self):
+        """ Gets ALL EXECUTIONS for a particular testcase on a test plan.
+            If there are no filter criteria regarding platform and build,
+            result will be get WITHOUT checking for a particular platform and build.
+         
+        mandatory arg: testplanid - identifies the test plan 
+        
+        mandatory args variations: testcaseid - testcaseexternalid
+        - test case information is general mandatory
+
+        optional args:  buildid
+                        platformid
+        
+        options : dictionary with key 'getBugs' and 
+                                  values 0 (false = default) or 1 (true)   
+        """
   
     #
     #  internal methods for general server calls

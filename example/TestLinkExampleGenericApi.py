@@ -665,12 +665,20 @@ print("getLastExecutionResult", response)
 response = myTestLink.getExecutionSet(newTestPlanID_A, 
                                              testcaseid=newTestCaseID_B)
 print("getExecutionSet", response)
+
 response = myTestLink.getLastExecutionResult(newTestPlanID_A, 
                         testcaseid=newTestCaseID_AA, platformid=newPlatFormID_A)
 print("getLastExecutionResult", response)
 response = myTestLink.getExecutionSet(newTestPlanID_A, 
                         testcaseid=newTestCaseID_AA, platformid=newPlatFormID_A)
 print("getExecutionSet", response)
+
+response = myTestLink.getAllExecutionsResults(newTestPlanID_A, 
+                        testcaseid=newTestCaseID_AA, options={'getBugs' : 1})
+print("getAllExecutionsResults", response)
+response = myTestLink.getAllExecutionsResults(newTestPlanID_B, 
+                        testcaseid=newTestCaseID_B, options={'getBugs' : 1})
+print("getAllExecutionsResults", response)
     
 response = myTestLink.getExecCountersByBuild(newTestPlanID_A)
 print("getExecCountersByBuild", response)

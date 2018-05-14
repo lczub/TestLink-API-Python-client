@@ -77,7 +77,7 @@ def test_createTestSuite_unknownID(api_client):
     with pytest.raises(TLResponseError, match='7000.*40000711'):
         api_client.createTestSuite( 40000711, 'suite 40000712', 'detail 40000713')
 
-# see test_ApiCall_UnknownKey_DifferentBehaviour    
+# see test_apicall_differentPositionalArgs    
 # def test_createTestCase_unknownID(api_client):
 #     tc_steps = []
 #     with pytest.raises(TLResponseError, match='7000.*40000713'):
@@ -96,7 +96,7 @@ def test_getFullPath_unknownID(api_client):
     with pytest.raises(TLResponseError, match='getFullPath.*234'):
         api_client.getFullPath('40000711')
  
-# see test_ApiCall_UnknownKey_DifferentBehaviour   
+# see test_apicall_differentPositionalArgs   
 # def test_getLastExecutionResult_unknownID(api_client):
 #     with pytest.raises(TLResponseError, match='3000.*40000711'):
 #         api_client.getLastExecutionResult(40000711, testcaseid=40000712)
@@ -125,7 +125,7 @@ def test_getTestCaseAttachments_unknownID(api_client):
     with pytest.raises(TLResponseError, match='5000.*40000711'):
         api_client.getTestCaseAttachments(testcaseid=40000711)
 
-# see test_ApiCall_UnknownKey_DifferentBehaviour        
+# see test_apicall_differentPositionalArgs        
 # def test_getTestCaseCustomFieldDesignValue_unknownID(api_client):
 #     with pytest.raises(TLResponseError, match='7000.*40000711'):
 #         api_client.getTestCaseCustomFieldDesignValue(
@@ -139,7 +139,7 @@ def test_getTestCasesForTestPlan_unknownID(api_client):
     with pytest.raises(TLResponseError, match='3000.*40000711'):
         api_client.getTestCasesForTestPlan(40000711)
 
-# see test_ApiCall_UnknownKey_DifferentBehaviour  
+# see test_apicall_differentPositionalArgs  
 # def test_getTestCasesForTestSuite_unknownID(api_client):
 #     with pytest.raises(TLResponseError, match='8000.*40000711'):
 #         api_client.getTestCasesForTestSuite(40000711)
@@ -172,18 +172,18 @@ def test_getTotalsForTestPlan_unknownID(api_client):
     with pytest.raises(TLResponseError, match='3000.*40000711'):
         api_client.getTotalsForTestPlan(40000711)
  
-# see test_ApiCall_UnknownKey_DifferentBehaviour 
+# see test_apicall_differentPositionalArgs 
 # def test_createBuild_unknownID(api_client):
 #     with pytest.raises(TLResponseError, match='3000.*40000711'):
 #         api_client.createBuild(40000711, 'Build 40000712', buildnotes='note 40000713')
  
-# see test_ApiCall_UnknownKey_DifferentBehaviour 
+# see test_apicall_differentPositionalArgs 
 # def test_reportTCResult_unknownID(api_client):
 #     with pytest.raises(TLResponseError, match='5000.*40000711'):
 #         api_client.reportTCResult(40000712, 'p', testcaseid=40000711, 
 #                                    buildname='build 40000713', notes='note 40000714' )
 
-# see test_ApiCall_UnknownKey_DifferentBehaviour  
+# see test_apicall_differentPositionalArgs  
 # def test_uploadExecutionAttachment_unknownID(api_client, attachmentFile):
 #     with pytest.raises(TLResponseError, match='6004.*40000712'):
 #         api_client.uploadExecutionAttachment(attachmentFile, 40000712, 
@@ -459,6 +459,9 @@ def test_getTestSuiteAttachments_unknownID(api_client):
     with pytest.raises(TLResponseError, match='8000.*40000712'):
         api_client.getTestSuiteAttachments(40000712)
        
+def test_getAllExecutionsResults_unknownID(api_client):
+    with pytest.raises(TLResponseError, match='3000.*40000711'):
+        api_client.getAllExecutionsResults(40000711)
                                
 # if __name__ == "__main__":
 # #import sys;sys.argv = ['', 'Test.testName']

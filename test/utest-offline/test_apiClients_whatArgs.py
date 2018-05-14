@@ -92,7 +92,11 @@ test_data_apiCall_descriptions_equal_all = [
                         'platformid=<platformid>']),
     ('getReqCoverage',['<testprojectid>,', '<requirementdocid>,']),
     ('setTestCaseTestSuite',['<testcaseexternalid>,', '<testsuiteid>,']),
-    ('getTestSuiteAttachments',['<testsuiteid>,'])
+    ('getTestSuiteAttachments',['<testsuiteid>,']),
+    ('getAllExecutionsResults',['<testplanid>,','testcaseid=<testcaseid>', 
+                        'testcaseexternalid=<testcaseexternalid>', 
+                        'platformid=<platformid>', 'buildid=<buildid>',
+                        'options=<options>'])
     ]
 
 @pytest.mark.parametrize("apiCall, descriptions", 
@@ -124,91 +128,4 @@ def test_whatArgs_apiCall_descriptions_only_general(api_general_client, apiCall,
     for parts in descriptions:
         assert parts in argsDescription
          
-# 
-# def test_whatArgs_createTestPlan(api_client):
-#     argsDescription = api_client.whatArgs('createTestPlan')
-#     self.assertIn('prefix=<prefix>', argsDescription)
-#     self.assertIn('testprojectname=<testprojectname>', argsDescription)
-# 
-# def test_whatArgs_getTestSuite(api_client):
-#     argsDescription = api_client.whatArgs('getTestSuite')
-#     self.assertIn('<testsuitename>, <prefix>', argsDescription)
-#     
-# def test_whatArgs_updateTestSuite(api_client):
-#     argsDescription = api_client.whatArgs('updateTestSuite')
-#     self.assertIn('<testsuiteid>,', argsDescription)
-#     self.assertIn('testprojectid=<testprojectid>', argsDescription)
-#     self.assertIn('prefix=<prefix>', argsDescription)
-#     self.assertIn('parentid=<parentid>', argsDescription)
-#     self.assertIn('testsuitename=<testsuitename>', argsDescription)
-#     self.assertIn('details=<details>', argsDescription)
-#     self.assertIn('order=<order>', argsDescription)
-# 
-# def test_whatArgs_createBuild(api_client):
-#     argsDescription = api_client.whatArgs('createBuild')
-#     self.assertIn('<testplanid>,', argsDescription)
-#     self.assertIn('<buildname>,', argsDescription)
-#     self.assertIn('buildnotes=<buildnotes>', argsDescription)
-#     self.assertIn('active=<active>', argsDescription)
-#     self.assertIn('open=<open>', argsDescription)
-#     self.assertIn('releasedate=<releasedate>', argsDescription)
-#     self.assertIn('copytestersfrombuild=<copytestersfrombuild>', argsDescription)
-# 
-# def test_whatArgs_addTestCaseToTestPlan(api_client):
-#     argsDescription = api_client.whatArgs('addTestCaseToTestPlan')
-#     self.assertIn('<testprojectid>,', argsDescription)
-#     self.assertIn('<testplanid>,', argsDescription)
-#     self.assertIn('<testcaseexternalid>,', argsDescription)
-#     self.assertIn('<version>,', argsDescription)
-#     self.assertIn('platformid=<platformid>', argsDescription)
-#     self.assertIn('executionorder=<executionorder>', argsDescription)
-#     self.assertIn('urgency=<urgency>', argsDescription)
-#     self.assertIn('overwrite=<overwrite>', argsDescription)
-#            
-# def test_whatArgs_createTestProject(api_client):
-#     argsDescription = api_client.whatArgs('createTestProject')
-#     self.assertIn('<testprojectname>,', argsDescription)
-#     self.assertIn('<testcaseprefix>,', argsDescription)
-#     self.assertIn('notes=<notes>', argsDescription)
-#     self.assertIn('active=<active>', argsDescription)
-#     self.assertIn('public=<public>', argsDescription)
-#     self.assertIn('options=<options>', argsDescription)
-#     self.assertIn('itsname=<itsname>', argsDescription)
-#     self.assertIn('itsenabled=<itsenabled>', argsDescription)
-# 
-# def test_whatArgs_getIssueTrackerSystem(api_client):
-#     argsDescription = api_client.whatArgs('getIssueTrackerSystem')
-#     self.assertIn('<itsname>,', argsDescription)
-# 
-# def test_whatArgs_getExecutionSet(api_client):
-#     argsDescription = api_client.whatArgs('getExecutionSet')
-#     self.assertIn('<testplanid>,', argsDescription)
-#     self.assertIn('testcaseid=<testcaseid>', argsDescription)
-#     self.assertIn('testcaseexternalid=<testcaseexternalid>', argsDescription)
-#     self.assertIn('buildid=<buildid>', argsDescription)
-#     self.assertIn('buildname=<buildname>', argsDescription)
-#     self.assertIn('platformid=<platformid>', argsDescription)
-#     self.assertIn('platformname=<platformname>', argsDescription)
-#     self.assertIn('options=<options>', argsDescription)
-#     
-# def test_whatArgs_getRequirements(api_client):
-#     argsDescription = api_client.whatArgs('getRequirements')
-#     self.assertIn('<testprojectid>,', argsDescription)
-#     self.assertIn('testplanid=<testplanid>', argsDescription)
-#     self.assertIn('platformid=<platformid>', argsDescription)
-#     
-# def test_whatArgs_getReqCoverage(api_client):
-#     argsDescription = api_client.whatArgs('getReqCoverage')
-#     self.assertIn('<testprojectid>,', argsDescription)
-#     self.assertIn('<requirementdocid>,', argsDescription)
-# 
-# def test_whatArgs_setTestCaseTestSuite(api_client):
-#     argsDescription = api_client.whatArgs('setTestCaseTestSuite')
-#     self.assertIn('<testcaseexternalid>,', argsDescription)
-#     self.assertIn('<testsuiteid>,', argsDescription)
-#     
-# def test_whatArgs_getTestSuiteAttachments(api_client):
-#     argsDescription = api_client.whatArgs('getTestSuiteAttachments')
-#     self.assertIn('<testsuiteid>,', argsDescription)
-
         

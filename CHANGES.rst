@@ -5,8 +5,23 @@ TestLink-API-Python-client v0.6.5 (under develop)
 -------------------------------------------------
 support for TL 1.9.17 future release and py27, py34, py35 and py36
 
+
+implement 1.9.17 new api interfaces - #76, #81, #82, #83, #101
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- getExecutionSet(<testplanid>, [testcaseid=<testcaseid>], [testcaseexternalid=<testcaseexternalid>], 
+  [buildid=<buildid>], [buildname=<buildname>], [platformid=<platformid>], 
+  [platformname=<platformname>], [options=<options>], [devKey=<devKey>])
+- getRequirements(<testprojectid>, [testplanid=<testplanid>], [platformid=<platformid>], [devKey=<devKey>])
+- getReqCoverage(<testprojectid>, <requirementdocid>, [devKey=<devKey>])
+- setTestCaseTestSuite(<testcaseexternalid>, <testsuiteid>, [devKey=<devKey>])
+- getTestSuiteAttachments(<testsuiteid>, [devKey=<devKey>])
+- getAllExecutionsResults(<testplanid>, [testcaseid=<testcaseid>], 
+  [testcaseexternalid=<testcaseexternalid>], [platformid=<platformid>], 
+  [buildid=<buildid>], [options=<options>])
+
 TestReporter and other improvements pull request #94
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 pull request by Brian-Williams:
 
@@ -39,21 +54,12 @@ TestLinkHelper will set the *unverified_context()* if the server url starts with
 *https* and no *context* is defined, calling 
 - TestLinkHelper().connect(TestlinkAPIClient)
 
-implement 1.9.17 new api interfaces - #76, #81, #82, #83
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- getExecutionSet(<testplanid>, [testcaseid=<testcaseid>], [testcaseexternalid=<testcaseexternalid>], 
-  [buildid=<buildid>], [buildname=<buildname>], [platformid=<platformid>], 
-  [platformname=<platformname>], [options=<options>], [devKey=<devKey>])
-- getRequirements(<testprojectid>, [testplanid=<testplanid>], [platformid=<platformid>], [devKey=<devKey>])
-- getReqCoverage(<testprojectid>, <requirementdocid>, [devKey=<devKey>])
-- setTestCaseTestSuite(<testcaseexternalid>, <testsuiteid>, [devKey=<devKey>])
-- getTestSuiteAttachments(<testsuiteid>, [devKey=<devKey>])
 
 known TL 1.9.17-DEV issues:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+API-XMLRPC - new 1.9.17 xmlrpc.class function getAllExecutionsResults not callable via XMLRPC api
 
-
+- see `TL Mantis Ticket 8259 <http://mantis.testlink.org/view.php?id=8259>`_
 
 fixed TL 1.9.17-DEV issues:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
