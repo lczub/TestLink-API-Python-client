@@ -204,9 +204,9 @@ class AddPlatformReporter(TestReporter):
                     self.tls.createPlatform(self.testprojectname, pn_kwarg,
                                             notes=self.platformnotes)
                     self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
+                    self._platformname_generated = True
                 else:
                     raise
-            self._platformname_generated = True
         return pn_kwarg
 
     @property
@@ -223,13 +223,14 @@ class AddPlatformReporter(TestReporter):
         """
         platforms = self.tls.getTestPlanPlatforms(self.testplanid)
         for platform in platforms:
-            if platform['name'] == platformname:
+            # https://github.com/Brian-Williams/TestLink-API-Python-client/issues/1
+            if platform['name'].lower() == platformname.lower():
                 return platform['id']
         # Platformname houses platform creation as platform creation w/o a name isn't possible
         if not self.platformname:
             raise TLArgError(
                 "Couldn't find platformid for {}.{}, "
-                "please provide a platformname to generate.".format(self.testplanid, platformname)
+                "please provide a platformname to generate.".format(self.testplanid, self.platformname)
             )
         if _firstrun is True:
             return self.getPlatformID(self.platformname, _firstrun=False)
