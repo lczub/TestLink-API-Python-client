@@ -7,8 +7,8 @@ TestLink-API-Python-client Installation
 Preconditions
 -------------
 
-Currently the combinations Python 2.7.13/3.4.4/3.5.3/3.6.1 are tested with 
-TestLink 1.9.16. Other combination might work - feedback is welcome :-) 
+Currently the combinations Python 2.7.15//3.6.5 are tested with 
+TestLink 1.9.17. Other combination might work - feedback is welcome :-) 
 
 TestLink configuration
 ----------------------
@@ -42,7 +42,7 @@ The source code can be retrieved as source distribution either
 
 Install the archives using pip by running::
 
- pip install TestLink-API-Python-client-0.6.3.zip
+ pip install TestLink-API-Python-client-0.8.0.zip
     
 Installing from source
 ----------------------    
@@ -103,12 +103,6 @@ If you always work with the same TestLink server, extend the script
 with connection parameter as environment variables  
 
 - TESTLINK_API_PYTHON_SERVER_URL and TESTLINK_API_PYTHON_DEVKEY 
-
-Known Installation Problems
----------------------------
-
-If the installation for the combination **linux + py26** fails, maybe the workaround from  `issue 50`_ helps.
-
 
 
 .. _PyPI: https://pypi.python.org/pypi

@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2012-2017 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2012-2018 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under Apache 2.0 
 #  
@@ -18,8 +18,6 @@ CLASSIFIERS = [
   'License :: OSI Approved :: Apache Software License',
   'Operating System :: OS Independent',
   'Programming Language :: Python :: 2.7',
-  'Programming Language :: Python :: 3.4',
-  'Programming Language :: Python :: 3.5',
   'Programming Language :: Python :: 3.6',
   'Topic :: Software Development :: Testing',
   'Topic :: Software Development :: Libraries :: Python Modules'

@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2013-2017 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2013-2018 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -21,14 +21,7 @@
 # no calls are send to a TestLink Server
 
 import sys, os.path
-
-IS_PY26 = False
-if sys.version_info[0] == 2 and sys.version_info[1] == 6:
-    # py26 needs backport unittest2
-    import unittest2 as unittest
-    IS_PY26 = True
-else:
-    import unittest
+import unittest
     
 if sys.version_info[0] == 2 and sys.version_info[1] == 7:
     # py27 and py31 assertRaisesRegexp was renamed in py32 to assertRaisesRegex
@@ -747,11 +740,7 @@ class TestLinkAPIGenericOfflineTestCase(unittest.TestCase):
         """ create a TestLink Generic API dummy with ProxiedTransport"""
         self.api = DummyAPIGeneric('http://SERVER-URL-71', 'DEVKEY-71', 
                                    transport='PROXY-71')
-        if not IS_PY26:
-            # Py 26 does not define a __call__ method and getattr is overriden
-            # to created a request and return the response
-            # -> so no access to attribute __transport with Py26
-            self.assertEqual('PROXY-71', self.api.server.__call__('transport'))
+        self.assertEqual('PROXY-71', self.api.server.__call__('transport'))
                     
     def test_getRequirements_allRequirements(self):
         self.api.loadScenario(SCENARIO_REQUIREMENTS)
@@ -782,25 +771,15 @@ class TestLinkAPIGenericOfflineTestCase(unittest.TestCase):
         """ create a TestLink Generic API dummy with use_datetime"""
         self.api = DummyAPIGeneric('http://SERVER-URL-71', 'DEVKEY-71', 
                                    use_datetime='datetime?')
-        if not IS_PY26:
-            # Py 26 does not define a __call__ method and getattr is overriden
-            # to created a request and return the response
-            # -> so no access to attribute __transport with Py26
-            a_transport = self.api.server.__call__('transport')
-            
-            self.assertEqual('datetime?', a_transport._use_datetime)
+        a_transport = self.api.server.__call__('transport')
+        self.assertEqual('datetime?', a_transport._use_datetime)
 
     def test_connect_with_context(self):
         """ create a TestLink Generic API dummy with use_datetime"""
         self.api = DummyAPIGeneric('https://SERVER-URL-71', 'DEVKEY-71', 
                                    context='ssl_context')
-        if not IS_PY26:
-            # Py 26 does not define a __call__ method and getattr is overriden
-            # to created a request and return the response
-            # -> so no access to attribute __transport with Py26
-            a_transport = self.api.server.__call__('transport')
-            
-            self.assertEqual('ssl_context', a_transport.context)
+        a_transport = self.api.server.__call__('transport')
+        self.assertEqual('ssl_context', a_transport.context)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

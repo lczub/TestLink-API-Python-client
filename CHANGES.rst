@@ -1,9 +1,9 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
-TestLink-API-Python-client v0.6.5 (under develop)
--------------------------------------------------
-support for TL 1.9.17 future release and py27, py34, py35 and py36
+TestLink-API-Python-client v0.8.0
+---------------------------------
+support for TL 1.9.17 release and py27, py36
 
 
 implement 1.9.17 new api interfaces - #76, #81, #82, #83, #101
@@ -55,8 +55,8 @@ TestLinkHelper will set the *unverified_context()* if the server url starts with
 - TestLinkHelper().connect(TestlinkAPIClient)
 
 
-known TL 1.9.17-DEV issues:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+known TL 1.9.17 issues:
+~~~~~~~~~~~~~~~~~~~~~~~
 API-XMLRPC - new 1.9.17 xmlrpc.class function getAllExecutionsResults not callable via XMLRPC api
 
 - see `TL Mantis Ticket 8259 <http://mantis.testlink.org/view.php?id=8259>`_

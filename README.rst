@@ -1,7 +1,7 @@
 TestLink API Python Client
 ==========================
 
-Copyright 2011-2017 
+Copyright 2011-2018 
 James Stock, Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
 
 License `Apache License 2.0`_
