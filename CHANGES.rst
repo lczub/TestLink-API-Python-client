@@ -1,8 +1,8 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
-TestLink-API-Python-client v0.8.0
----------------------------------
+TestLink-API-Python-client v0.8.0 (May. 2018)
+---------------------------------------------
 support for TL 1.9.17 release and py27, py36
 
 
