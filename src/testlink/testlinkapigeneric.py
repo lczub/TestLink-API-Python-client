@@ -18,8 +18,9 @@
 # ------------------------------------------------------------------------
 
 import sys, os.path
-IS_PY3 = sys.version_info[0] < 3
-if IS_PY3:
+IS_PY3 = sys.version_info[0] > 2
+if not IS_PY3:
+    # importing required py2 modules
     import xmlrpclib
     # in py 3 encodestring is deprecated and an alias for encodebytes
     # see issue #39 and compare py2 py3 doc 
@@ -27,6 +28,7 @@ if IS_PY3:
     # https://docs.python.org/3/library/base64.html#base64.encodebytes
     from base64 import encodestring as encodebytes
 else:
+    # importing required py3 modules
     import xmlrpc.client as xmlrpclib
     from base64 import encodebytes
     
