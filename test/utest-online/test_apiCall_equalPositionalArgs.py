@@ -245,7 +245,7 @@ def test_uploadTestSuiteAttachment_unknownID(api_client, attachmentFile):
  
 def test_uploadTestCaseAttachment_unknownID(api_client, attachmentFile):
     with pytest.raises(TLResponseError, match='5000.*testcaseid'):
-        api_client.uploadTestCaseAttachment(attachmentFile, 40000712, 
+        api_client.uploadTestCaseAttachment(attachmentFile, 40000712, 1,
                     title='title 40000713', description='descr. 40000714')
  
 def test_uploadAttachment_unknownID(api_client, attachmentFile):

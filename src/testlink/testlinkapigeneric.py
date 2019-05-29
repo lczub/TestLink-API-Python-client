@@ -595,10 +595,40 @@ TL version >= 1.9.11
         b) requirements with ID 6735 and 6737 of requirement spec 6733
         """
 
+#     /**
+#      * Gets attachments for specified test case VERSION.
+#      * The attachment file content is Base64 encoded. To save the file to disk in client,
+#      * Base64 decode the content and write file in binary mode.
+#      *
+#      * @param struct $args
+#      * @param string $args["devKey"]
+#      *            Developer key
+#      * @param int $args["testcaseid"]:
+#      *            optional, if does not is present
+#      *            testcaseexternalid must be present
+#      *
+#      * @param int $args["version"]:
+#      *            optional, if not present, the latest version will be used
+#      *
+#      * @param int $args["testcaseexternalid"]:
+#      *            optional, if does not is present
+#      *            testcaseid must be present
+#      *
+#      * @return mixed $resultInfo
+#      */
+#     public function getTestCaseAttachments($args) {
+
     @decoApiCallAddDevKey               
-    @decoMakerApiCallWithArgs([], ['testcaseid', 'testcaseexternalid'])
+    @decoMakerApiCallWithArgs([], ['testcaseid', 'version', 
+                                   'testcaseexternalid'])
     def getTestCaseAttachments(self):
         """ Gets attachments for specified test case.
+        
+        args variations: testcaseid - testcaseexternalid
+        
+        version - optional, if not present, the latest test case version 
+                  will be used
+        
         The attachment file content is Base64 encoded. To save the file to disk 
         in client, Base64 decode the content and write file in binary mode.  """
 
@@ -808,14 +838,44 @@ TL version >= 1.9.11
         ATTACHMENTFILE, but user could overwrite it, if user want to store the
         attachment with a different name 
         """
+#     /**
+#      * Uploads an attachment for a Test Case.
+#      *
+#      * The attachment content must be Base64 encoded by the client before sending it.
+#      *
+#      * @param struct $args
+#      * @param string $args["devKey"]
+#      *            Developer key
+#      * @param int $args["testcaseid"]
+#      *            Test Case INTERNAL ID
+#      * @param int $args["version"]
+#      *            version number
+#      *
+#      * @param string $args["title"]
+#      *           (Optional) The title of the Attachment
+#      * @param string $args["description"]
+#      *           (Optional) The description of the Attachment
+#      * @param string $args["filename"]
+#      *            The file name of the Attachment(e.g.:notes.txt)
+#      * @param string $args["filetype"]
+#      *            The file type of the Attachment(e.g.: text/plain)
+#      * @param string $args["content"]
+#      *            The content(Base64 encoded) of the Attachment
+#      *
+#      * @return mixed $resultInfo an array containing the fk_id, fk_table, title,
+#      *         description, file_name, file_size and file_type. If any errors occur it
+#      *         returns the erros map.
+#      */
+#     public function uploadTestCaseAttachment($args) {
 
     @decoApiCallAddAttachment            
-    @decoMakerApiCallWithArgs(['testcaseid'], 
+    @decoMakerApiCallWithArgs(['testcaseid', 'version'], 
                     ['title', 'description', 'filename', 'filetype', 'content'])
     def uploadTestCaseAttachment(self):
         """ Uploads an attachment for a Test Case.
         
         testcaseid - Test Case INTERNAL ID
+        version    - Test Case version number
         
         mandatory non api args: attachmentfile
         - python file descriptor pointing to the file

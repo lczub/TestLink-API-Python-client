@@ -709,14 +709,16 @@ print("getTestSuiteAttachments", response)
 
 # add png file as Attachment to test case B 
 a_file=open(NEWATTACHMENT_PNG, mode='rb')
-newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 
+newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 1,
             title='PNG Example', description='PNG Attachment Example for a TestCase')
 print("uploadTestCaseAttachment", newAttachment)
 # get Attachment of test case B 
 # response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
 # print "getTestCaseAttachments", response
+response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=1)
+print("getTestCaseAttachments v1", response)
 response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
-print("getTestCaseAttachments", response)
+print("getTestCaseAttachments vNone", response)
 
 # get requirements for the test project - empty result
 response = myTestLink.getRequirements(newProjectID)

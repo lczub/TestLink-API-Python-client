@@ -1,6 +1,20 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
+TestLink-API-Python-client v0.8.1 - Under Develop 
+------------------------------------------------------------
+support for TL 1.9.19 and TL 1.9.20 (dev) api changes related to test case 
+attachments, which will be stored since TL 1.9.19 with a reference to the 
+test case version instead the test case id .
+
+Parameter <version> is now mandatory for _uploadTestCaseAttachment_ and optional
+ for _getTestCaseAttachments_. 
+ 
+ Cause of the known TL 1.9.19 issue 
+ `TL Mantis Ticket 8658 <http://mantis.testlink.org/view.php?id=8658>`_ it is 
+ recommended to use the TL 1.9.20 development state with github commit 
+ 6a4984164 or later. 
+
 TestLink-API-Python-client v0.8.0 (May. 2018)
 ---------------------------------------------
 support for TL 1.9.17 release and py27, py36

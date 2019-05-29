@@ -704,17 +704,6 @@ print("uploadTestSuiteAttachment", newAttachment)
 response = myTestLink.getTestSuiteAttachments(newTestSuiteID_A)
 print("getTestSuiteAttachments", response)
 
-# add png file as Attachment to test case B 
-a_file=open(NEWATTACHMENT_PNG, mode='rb')
-newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 
-            title='PNG Example', description='PNG Attachment Example for a TestCase')
-print("uploadTestCaseAttachment", newAttachment)
-# get Attachment of test case B 
-# response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
-# print "getTestCaseAttachments", response
-response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
-print("getTestCaseAttachments", response)
-
 # copy test case - as a new TC version
 print("create new version of TC B")
 response = myTestLink.copyTCnewVersion(newTestCaseID_B, 
@@ -729,6 +718,33 @@ print('getTestCaseByVersion v2', response)
 response = myTestLink.getTestCaseByVersion(newTestCaseID_B)
 print('getTestCaseByVersion vNone', response)
 
+# add png file as Attachment to test case B version 1
+a_file=open(NEWATTACHMENT_PNG, mode='rb')
+newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 1,
+            title='PNG Example v1', description='PNG Attachment Example for a TestCase v1')
+print("uploadTestCaseAttachment v1", newAttachment)
+# add py file as Attachment to test case B version 2
+a_file=open(NEWATTACHMENT_PY, mode='rb')
+newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 2,
+            title='Textfile Example v2', description='Text Attachment Example for a TestCase v2')
+print("uploadTestCaseAttachment v2", newAttachment)
+
+# get Attachment of test case B v1
+# response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
+# print "getTestCaseAttachments", response
+response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=1)
+print("getTestCaseAttachments v1", response)
+
+# get Attachment of test case B - last version
+# response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
+# print "getTestCaseAttachments", response
+response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=2)
+attachment_id = list(response)[0]
+print("getTestCaseAttachments v2", response[attachment_id]['title'])
+response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
+print("getTestCaseAttachments vNone", response[attachment_id]['name'])
+
+
 # copy test case - as new TC in a different TestSuite
 print("copy TC B as TC BA into Test suite A")
 response = myTestLink.copyTCnewTestCase(newTestCaseID_B, 
@@ -738,6 +754,9 @@ response = myTestLink.getTestCasesForTestSuite(newTestSuiteID_B, False, 'simple'
 print('getTestCasesForTestSuite B', response)
 response = myTestLink.getTestCasesForTestSuite(newTestSuiteID_A, True, 'simple')
 print('getTestCasesForTestSuite A', response)
+
+
+
 
 # sample, how the test plan can be updated to use the new tc version
 # site effect of this step, assigned testers and existing execution results are 

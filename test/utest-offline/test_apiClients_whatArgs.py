@@ -96,7 +96,14 @@ test_data_apiCall_descriptions_equal_all = [
     ('getAllExecutionsResults',['<testplanid>,','testcaseid=<testcaseid>', 
                         'testcaseexternalid=<testcaseexternalid>', 
                         'platformid=<platformid>', 'buildid=<buildid>',
-                        'options=<options>'])
+                        'options=<options>']),
+    ('getTestCaseAttachments',['version=<version>', 
+                               'testcaseexternalid=<testcaseexternalid>']),
+    ('uploadTestCaseAttachment',['<testcaseid>,', '<version>,', 
+                               'title=<title>', 'description=<description>',
+                               'filename=<filename>', 'filetype=<filetype>',
+                               'content=<content>']),
+
     ]
 
 @pytest.mark.parametrize("apiCall, descriptions", 
@@ -108,7 +115,8 @@ def test_whatArgs_apiCall_descriptions_equal_all(api_client, apiCall, descriptio
  
 test_data_apiCall_descriptions_only_generic = [
     ('createTestCase', ['<steps>,']),
-    ('createBuild',['buildnotes=<buildnotes>'])
+    ('createBuild',['buildnotes=<buildnotes>']),
+    ('getTestCaseAttachments',['testcaseid=<testcaseid>'])
     ]
 @pytest.mark.parametrize("apiCall, descriptions", 
                          test_data_apiCall_descriptions_only_generic)     
@@ -119,7 +127,8 @@ def test_whatArgs_apiCall_descriptions_only_generic(api_generic_client, apiCall,
 
 test_data_apiCall_descriptions_only_general = [
     ('createTestCase', ['steps=<steps>']),
-    ('createBuild',['<buildnotes>,'])
+    ('createBuild',['<buildnotes>,']),
+    ('getTestCaseAttachments',['<testcaseid>,'])
     ]
 @pytest.mark.parametrize("apiCall, descriptions", 
                          test_data_apiCall_descriptions_only_general)     
