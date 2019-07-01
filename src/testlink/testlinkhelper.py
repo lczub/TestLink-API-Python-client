@@ -96,7 +96,7 @@ class TestLinkHelper(object):
         if self._devkey is None:
             self._devkey = os.getenv(self.ENVNAME_DEVKEY, self.DEFAULT_DEVKEY)
 
-        if not self._proxy:
+        if self._proxy is None:
             self._proxy =  os.getenv(self.ENVNAME_PROXY, self.DEFAULT_PROXY)
 
     def _createArgparser(self, usage):
