@@ -156,6 +156,16 @@ def test_connect_with_proxy(api_helper_class):
     assert 'SERVER-URL-71' == a_tl_api.server
     assert 'DEVKEY-71' == a_tl_api.devKey
     assert 'PROXY-71' == a_tl_api.args['transport'].proxy
+    
+def test_connect_ignoring_proxy_env(api_helper_class, monkeypatch):
+    """ create a TestLink API dummy ignoring PROXY env - pullRequest #121 """
+    setEnviron(monkeypatch, ENVNAMES[2], 'PROXY-71')
+    a_helper = api_helper_class('SERVER-URL-71', 'DEVKEY-71', False)
+    a_tl_api = a_helper.connect(DummyTestLinkAPI)
+    assert 'SERVER-URL-71' == a_tl_api.server
+    assert 'DEVKEY-71' == a_tl_api.devKey
+    assert {} == a_tl_api.args
+   
 
 def test_connect_with_https_no_context(api_helper_class):
     """ create a TestLink API dummy for https with uncertified context """
