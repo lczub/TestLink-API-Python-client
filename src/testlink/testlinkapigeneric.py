@@ -490,6 +490,8 @@ TL version >= 1.9.11
 #    *                     'full': (default) get summary,steps,expected_results,test suite name
 #    *                     'simple':
 #    *                     'details':
+#    * @param array $args["customfields"]
+#    *             - optional can be a boolean or an array with the requested fields
 #    * @return mixed $resultInfo
 #    *
 #    * @internal revisions
@@ -503,7 +505,8 @@ TL version >= 1.9.11
     @decoMakerApiCallWithArgs(['testplanid'], 
                 ['buildid', 'platformid', 
                  'testcaseid', 'keywordid', 'keywords', 'executed', 'assignedto', 
-                 'executestatus', 'executiontype', 'getstepinfo', 'details'])
+                 'executestatus', 'executiontype', 'getstepinfo', 'details',
+                 'customfields'])
     def getTestCasesForTestPlan(self):
         """ List test cases linked to a test plan
         

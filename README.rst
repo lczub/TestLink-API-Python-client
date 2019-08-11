@@ -120,4 +120,4 @@ TestLink-API-Python-client developers
 .. _Maberi: https://github.com/Maberi/TestLink-API-Python-client.git
 .. _Brian-Williams: https://github.com/Brian-Williams/TestLink-API-Python-client
 .. _alexei-drozdov: https://github.com/alexei-drozdov/TestLink-API-Python-client
-.. _janLo :https://github.com/janLo/TestLink-API-Python-client.git
+.. _janLo: https://github.com/janLo/TestLink-API-Python-client.git

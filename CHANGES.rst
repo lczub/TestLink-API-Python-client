@@ -3,17 +3,34 @@ Changes in TestLink-API-Python-client Source Distribution
 
 TestLink-API-Python-client v0.8.1 - Under Develop 
 ------------------------------------------------------------
-support for TL 1.9.19 and TL 1.9.20 (dev) api changes related to test case 
-attachments, which will be stored since TL 1.9.19 with a reference to the 
-test case version instead the test case id .
+main topic is to support TL 1.9.19 and TL 1.9.20 (dev) api changes related to 
+test case attachments, which are stored since TL 1.9.19 with a reference to
+the test case version instead the test case id .
 
 Parameter <version> is now mandatory for _uploadTestCaseAttachment_ and optional
  for _getTestCaseAttachments_. 
  
- Cause of the known TL 1.9.19 issue 
- `TL Mantis Ticket 8658 <http://mantis.testlink.org/view.php?id=8658>`_ it is 
- recommended to use the TL 1.9.20 development state with github commit 
- 6a4984164 or later. 
+implement other 1.9.20 (dev) changed api interfaces - #122
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+changed TestlinkAPIGeneric and TestlinkAPIClient api methods
+
+- getTestCasesForTestPlan() is adapted to support the new optional argument <customfields> . 
+  Sample see `<example/TestLinkExample_CF_KW.py>`_ 
+
+known TL 1.9.19 issue:
+~~~~~~~~~~~~~~~~~~~~~~~ 
+API-XMLRPC - getTestCaseAttachments returns no attachment, uploaded with uploadTestCaseAttachment
+
+- see TL Mantis Ticket 8658 <http://mantis.testlink.org/view.php?id=8658>`_
+- recommended to use the TL 1.9.20 development state with github commit 
+ 6a4984164 or later (even for the TL upgrade or installation). 
+ 
+known TL 1.9.20 development state issues (github commit a1c7aca97):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Calling getTestCasesForTestPlan() with the new optional argument <customfields> returns only internal db values.
+As alternative, loop over all returned test cases and call getTestCaseCustomFieldDesignValue(). 
+Sample see `<example/TestLinkExample_CF_KW.py>`_
 
 TestLink-API-Python-client v0.8.0 (May. 2018)
 ---------------------------------------------

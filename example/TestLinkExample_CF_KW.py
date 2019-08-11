@@ -25,17 +25,17 @@ This example requires a special existing project with special custom fields
 assigned
 
 a) run example TestLinkExample.py
-   - this creates a project like NEW_PROJECT_API-34
+   - this creates a project like NEW_PROJECT_API-37
 b) load custom field definitions customFields_ExampleDefs.xml
    TL - Desktop - System - Define Custom Fields - Import
-c) assign custom fields to project NEW_PROJECT_API-34
+c) assign custom fields to project NEW_PROJECT_API-37
    TL - Desktop - Test Project - Assign Custom Fields
 d) load keyword definitions keywords_ExampleDefs.xml
    TL - Desktop - Test Project - Keyword Management
    
 Script works with:
 
-TestProject NEW_PROJECT_API-34
+TestProject NEW_PROJECT_API-37
 - TestSuite B - First Level
   - TestCase TESTCASE_B
 - TestPlan TestPlan_API A (Platform Small Bird)
@@ -281,6 +281,14 @@ response = myTestLink.getTestCaseCustomFieldTestPlanDesignValue(
                 'cf_tc_pd_string', args['testprojectid'], args['tcversion_number'],
                 args['testplanid'], args['linkid'])
 print( "getTestCaseCustomFieldTestPlanDesignValue", response )
+
+# get CustomFields Values from all test cases of a TestPlan
+response = myTestLink.getTestCasesForTestPlan(args['testplanid'], 
+                                              customfields=True)
+print("getTestCasesForTestPlan with all customfields", response)
+response = myTestLink.getTestCasesForTestPlan(args['testplanid'], 
+                                              customfields=['cf_tc_sd_string'])
+print("getTestCasesForTestPlan with specific customfields", response)
 
 # update CustomField Value - TestSuite SpecDesign
 response = myTestLink.updateTestSuiteCustomFieldDesignValue( 
