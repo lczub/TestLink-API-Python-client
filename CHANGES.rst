@@ -8,7 +8,7 @@ test case attachments, which are stored since TL 1.9.19 with a reference to
 the test case version instead the test case id .
 
 Parameter <version> is now mandatory for _uploadTestCaseAttachment_ and optional
- for _getTestCaseAttachments_. 
+for _getTestCaseAttachments_. 
  
 implement other 1.9.20 (dev) changed api interfaces - #122
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,9 +24,9 @@ API-XMLRPC - getTestCaseAttachments returns no attachment, uploaded with uploadT
 
 - see TL Mantis Ticket 8658 <http://mantis.testlink.org/view.php?id=8658>`_
 - recommended to use the TL 1.9.20 development state with github commit 
- 6a4984164 or later (even for the TL upgrade or installation). 
+  6a4984164 or later (even for the TL upgrade or installation). 
  
-known TL 1.9.20 development state issues (github commit a1c7aca97):
+known TL 1.9.20 development state issue (github commit a1c7aca97):
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Calling getTestCasesForTestPlan() with the new optional argument <customfields> returns only internal db values.
 As alternative, loop over all returned test cases and call getTestCaseCustomFieldDesignValue(). 

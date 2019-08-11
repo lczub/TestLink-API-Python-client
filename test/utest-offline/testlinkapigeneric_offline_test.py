@@ -530,7 +530,7 @@ class TestLinkAPIGenericOfflineTestCase(unittest.TestCase):
     def test_connectionInfo_beforeTL199(self):
         self.api.loadScenario(SCENARIO_TL198)
         response = self.api.connectionInfo()
-        self.assertRegex(response, '\d*\.\d*\.\d*')
+        self.assertRegex(response, r'\d*\.\d*\.\d*')
         
     def test_getTestCaseCustomFieldDesignValue_notAssigned(self):
         self.api.loadScenario(SCENARIO_CUSTOM_FIELDS)

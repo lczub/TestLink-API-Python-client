@@ -254,7 +254,7 @@ def test_uploadAttachment_unknownID(api_client, attachmentFile):
                     title='title 40000713', description='descr. 40000714')
  
 def test_testLinkVersion(api_client):
-    assert re.match('\d*\.\d*\.\d*', api_client.testLinkVersion() )
+    assert re.match(r'\d*\.\d*\.\d*', api_client.testLinkVersion() )
  
 def test_getUserByLogin_unknownKey(api_client):
     with pytest.raises(TLResponseError, match='10000.*User Login'):

@@ -30,21 +30,21 @@ def test_whatArgs_noArgs(api_client):
     
 def test_whatArgs_onlyOptionalArgs(api_client):
     response = api_client.whatArgs('getTestCaseKeywords')
-    assert re.match('getTestCaseKeywords\(\[.*=<.*>\].*\).*',
+    assert re.match(r'getTestCaseKeywords\(\[.*=<.*>\].*\).*',
                     response)
      
 def test_whatArgs_OptionalAndPositionalArgs(api_client):
     response = api_client.whatArgs('createBuild')
-    assert re.match('createBuild\(<.*>.*\).*', response)
+    assert re.match(r'createBuild\(<.*>.*\).*', response)
  
 def test_whatArgs_MandatoryArgs(api_client):
     response = api_client.whatArgs('uploadExecutionAttachment')
-    assert re.match('uploadExecutionAttachment\(<attachmentfile>, <.*>.*\).*',
+    assert re.match(r'uploadExecutionAttachment\(<attachmentfile>, <.*>.*\).*',
                     response)
  
 def test_whatArgs_unknownMethods(api_client):
     response = api_client.whatArgs('apiUnknown')
-    assert re.match("callServerWithPosArgs\('apiUnknown', \[apiArg=<apiArg>\]\)", 
+    assert re.match(r"callServerWithPosArgs\('apiUnknown', \[apiArg=<apiArg>\]\)", 
                     response)
 
 test_data_apiCall_descriptions_equal_all = [
