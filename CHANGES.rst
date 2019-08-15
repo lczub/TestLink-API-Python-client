@@ -1,8 +1,10 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
-TestLink-API-Python-client v0.8.1 - Under Develop 
+TestLink-API-Python-client v0.8.1 (Aug. 2019)
 ------------------------------------------------------------
+support for TL 1.9.20 (dev) release and py27, py36, py37
+
 main topic is to support TL 1.9.19 and TL 1.9.20 (dev) api changes related to 
 test case attachments, which are stored since TL 1.9.19 with a reference to
 the test case version instead the test case id .
