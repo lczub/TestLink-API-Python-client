@@ -185,7 +185,13 @@ TL version >= 1.9.11
         releasedate : YYYY-MM-DD
         copytestersfrombuild : valid buildid tester assignments will be copied.
           """
-        
+    
+    @decoMakerApiCallReplaceTLResponseError()            
+    @decoApiCallAddDevKey
+    @decoMakerApiCallWithArgs(['buildid'])
+    def closeBuild(self):
+        """ Close build """
+    
     @decoMakerApiCallReplaceTLResponseError() 
     @decoApiCallAddDevKey            
     @decoMakerApiCallWithArgs()
