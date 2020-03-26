@@ -190,7 +190,12 @@ TL version >= 1.9.11
     @decoApiCallAddDevKey
     @decoMakerApiCallWithArgs(['buildid'])
     def closeBuild(self):
-        """ Close build """
+        """ Close build 
+
+        buildid - ATTENTION must be an integer
+        - createBuild returns the id as a string
+        - convert it with int() before calling closeBuild()
+        """
     
     @decoMakerApiCallReplaceTLResponseError() 
     @decoApiCallAddDevKey            
@@ -715,6 +720,10 @@ TL version >= 1.9.11
     @decoMakerApiCallWithArgs(['executionid'])
     def deleteExecution(self):
         """ delete an execution 
+        
+        executionid - ATTENTION must be an integer
+        - reportTCResult returns the id as a string
+        - convert it with int() before calling deleteExecution()
         
         Default TL server configuration does not allow deletion of exections
         see Installation & Configuration Manual Version 1.9

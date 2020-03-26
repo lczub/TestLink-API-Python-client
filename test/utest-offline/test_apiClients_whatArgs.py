@@ -109,6 +109,7 @@ test_data_apiCall_descriptions_equal_all = [
                                'title=<title>', 'description=<description>',
                                'filename=<filename>', 'filetype=<filetype>',
                                'content=<content>']),
+    ('closeBuild', ['<buildid>'])
 
     ]
 

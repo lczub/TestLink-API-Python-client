@@ -578,6 +578,10 @@ print("createBuild", newBuild)
 newBuildID_D = newBuild[0]['id'] 
 print("New Build '%s' - id: %s" % (NEWBUILD_D, newBuildID_D))
 
+# close build A - buildid must be converted to an integer
+response = myTestLink.closeBuild( int(newBuildID_A) )
+print("closeBuild", response)
+
 # get information - TestProject
 response = myTestLink.getTestProjectByName(NEWPROJECT)
 print("getTestProjectByName", response)

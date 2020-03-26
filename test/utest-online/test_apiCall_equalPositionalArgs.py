@@ -462,7 +462,12 @@ def test_getTestSuiteAttachments_unknownID(api_client):
 def test_getAllExecutionsResults_unknownID(api_client):
     with pytest.raises(TLResponseError, match='3000.*40000711'):
         api_client.getAllExecutionsResults(40000711)
-                               
+
+def test_closeBuild_unknownID(api_client):
+    with pytest.raises(TLResponseError, match='4000.*40000713'):
+        api_client.closeBuild(40000713)
+
+
 # if __name__ == "__main__":
 # #import sys;sys.argv = ['', 'Test.testName']
 # unittest.main()
