@@ -93,7 +93,7 @@ TestLink-API-Python-client developers
 -------------------------------------
 *   `James Stock`_, `Olivier Renault`_, `lczub`_, `manojklm`_ (PY3)
 *   `g4l4drim`_, `pade`_, `anton-matosov`_, `citizen-stig`_, `charz`_, `Maberi`_
-*   `Brian-Williams`_, `alexei-drozdov`_, `janLo`_
+*   `Brian-Williams`_, `alexei-drozdov`_, `janLo`_, `heuj`_
 *   anyone forgotten?
 
 .. _Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
@@ -117,7 +117,8 @@ TestLink-API-Python-client developers
 .. _citizen-stig: https://github.com/citizen-stig/TestLink-API-Python-client
 .. _charz: https://github.com/charz/TestLink-API-Python-client.git
 .. _manojklm: https://github.com/manojklm/TestLink-API-Python-client
-.. _Maberi: https://github.com/Maberi/TestLink-API-Python-client.git
+.. _Maberi: https://github.com/Maberi/TestLink-API-Python-client
 .. _Brian-Williams: https://github.com/Brian-Williams/TestLink-API-Python-client
 .. _alexei-drozdov: https://github.com/alexei-drozdov/TestLink-API-Python-client
-.. _janLo: https://github.com/janLo/TestLink-API-Python-client.git
+.. _janLo: https://github.com/janLo/TestLink-API-Python-client
+.. _heuj: https://github.com/heuj/TestLink-API-Python-client

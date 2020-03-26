@@ -1,6 +1,12 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
+TestLink-API-Python-client v0.8.1-fix131 (Mar. 2020)
+------------------------------------------------------------
+
+fix missing supported API 1.9.17 interfaces
+- Pull request #131 by heuy - add closeBuild api function
+
 TestLink-API-Python-client v0.8.1 (Aug. 2019)
 ------------------------------------------------------------
 support for TL 1.9.20 (dev) release and py27, py36, py37
