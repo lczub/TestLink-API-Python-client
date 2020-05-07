@@ -75,18 +75,15 @@ class ProxiedTransport(Transport):
         self._connection = host, HTTPConnection(self.proxy)
         return self._connection[1]
 
-    def send_request(self, connection, handler, request_body):
+    def send_request(self, host, handler, request_body, debug=False):
         """Send request header
 
         :param httplib.HTTPConnection connection: Connection handle
         :param str handler: Target RPC handler
         :param str request_body:XML-RPC body
         """
-        if self.accept_gzip_encoding and gzip:
-            connection.putrequest("POST", 'http://%s%s' % (self.realhost, handler), skip_accept_encoding=True)
-            connection.putheader("Accept-Encoding", "gzip")
-        else:
-            connection.putrequest("POST", 'http://%s%s' % (self.realhost, handler))
+
+        connection = super().send_request(host, handler, request_body, debug)
 
     def send_host(self, connection, host):
         """Send host name
