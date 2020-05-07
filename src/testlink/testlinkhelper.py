@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2012-2019 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2012-2020 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,10 +17,16 @@
 #
 # ------------------------------------------------------------------------
 
-import os
+import os, sys
 from argparse import ArgumentParser
 from .version import VERSION
 import ssl
+
+IS_PY3 = sys.version_info[0] > 2
+if IS_PY3:
+    from .proxiedtransport3 import ProxiedTransport
+else:
+    from .proxiedtransport2 import ProxiedTransport
 
 class TestLinkHelper(object):
     """ Helper Class to find out the TestLink connection parameters.
@@ -131,7 +137,6 @@ class TestLinkHelper(object):
     def _getProxiedTransport(self):
         """ creates and return a ProxiedTransport with self._proxy settings """
         
-        from .proxiedtransport import ProxiedTransport
         a_pt = ProxiedTransport()
         a_pt.set_proxy(self._proxy)
         return a_pt

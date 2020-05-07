@@ -21,7 +21,7 @@ import sys, os.path
 IS_PY3 = sys.version_info[0] > 2
 if not IS_PY3:
     # importing required py2 modules
-    import xmlrpclib
+    import xmlrpclib as xmlrpc_client
     # in py 3 encodestring is deprecated and an alias for encodebytes
     # see issue #39 and compare py2 py3 doc 
     # https://docs.python.org/2/library/base64.html#base64.encodestring
@@ -29,7 +29,7 @@ if not IS_PY3:
     from base64 import encodestring as encodebytes
 else:
     # importing required py3 modules
-    import xmlrpc.client as xmlrpclib
+    import xmlrpc.client as xmlrpc_client
     from base64 import encodebytes
     
 from platform import python_version    
@@ -68,9 +68,7 @@ class TestlinkAPIGeneric(object):
         allow_none=args.get('allow_none',False)
         use_datetime = args.get('use_datetime', False)
         context = args.get('context', None)
-        # named arg context is used, cause in Py36 it is place in a different 
-        # order as in Py27 and Py35
-        self.server = xmlrpclib.Server(server_url, transport, encoding,
+        self.server = xmlrpc_client.ServerProxy(server_url, transport, encoding,
                                        verbose, allow_none, use_datetime, 
                                        context=context)
         self.devKey = devKey
@@ -2070,11 +2068,11 @@ TL version >= 1.9.11
                 response = getattr(self.server.tl, methodNameAPI)()
             else:
                 response = getattr(self.server.tl, methodNameAPI)(argsAPI)
-        except (IOError, xmlrpclib.ProtocolError) as msg:
+        except (IOError, xmlrpc_client.ProtocolError) as msg:
             new_msg = 'problems connecting the TestLink Server %s\n%s' %\
             (self._server_url, msg) 
             raise testlinkerrors.TLConnectionError(new_msg)
-        except xmlrpclib.Fault as msg:
+        except xmlrpc_client.Fault as msg:
             new_msg = 'problems calling the API method %s\n%s' %\
             (methodNameAPI, msg) 
             raise testlinkerrors.TLAPIError(new_msg)

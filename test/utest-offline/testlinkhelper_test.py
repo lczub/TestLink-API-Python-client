@@ -21,7 +21,8 @@
 # this test works WITHOUT an online TestLink Server
 # no calls are send to a TestLink Server
 
-import pytest
+import pytest, sys
+IS_PY3 = sys.version_info[0] > 2
 
 class DummyTestLinkAPI(object):
     """ Dummy for Simulation TestLinkAPICLient. 
@@ -140,22 +141,50 @@ def test_connect(api_helper_class):
     assert 'DEVKEY-51' == a_tl_api.devKey
     assert {} == a_tl_api.args
      
-def test_getProxiedTransport(api_helper_class):
-    """ create a ProxiedTransportTestLink API dummy """
-    a_helper = api_helper_class('SERVER-URL-61', 'DEVKEY-61', 'PROXY-61')
+def test_getProxiedTransport_py2(api_helper_class):
+    """ create a TestLink Helper with ProxiedTransport - py27 """
+    if IS_PY3:
+        pytest.skip("py27 specific test")
+        
+    a_helper = api_helper_class('SERVER-URL-611', 'DEVKEY-611', 'PROXY-611:8080')
                                    #'http://fast.proxy.com.de/')
     a_pt = a_helper._getProxiedTransport()
     assert 'ProxiedTransport' == a_pt.__class__.__name__
-    assert 'PROXY-61' == a_pt.proxy
+    assert 'PROXY-611:8080' == a_pt.proxy
   
+def test_getProxiedTransport_py3(api_helper_class):
+    """ create a TestLink Helper with ProxiedTransport - py3x """
+
+    if not IS_PY3:
+        pytest.skip("py3 specific test")
     
-def test_connect_with_proxy(api_helper_class):
-    """ create a TestLink API dummy with ProxiedTransport"""
-    a_helper = api_helper_class('SERVER-URL-71', 'DEVKEY-71', 'PROXY-71')
+    a_helper = api_helper_class('SERVER-URL-612', 'DEVKEY-612', 'http://PROXY-612:8080')
+                                   #'http://fast.proxy.com.de/')
+    a_pt = a_helper._getProxiedTransport()
+    assert 'ProxiedTransport' == a_pt.__class__.__name__
+    assert ('http://proxy-612', 8080) == a_pt.proxy
+    
+def test_connect_with_proxy2(api_helper_class):
+    """ create a TestLink API dummy with ProxiedTransport - py27"""
+    if IS_PY3:
+        pytest.skip("py27 specific test")
+
+    a_helper = api_helper_class('SERVER-URL-711', 'DEVKEY-711', 'PROXY-71:8080')
     a_tl_api = a_helper.connect(DummyTestLinkAPI)
-    assert 'SERVER-URL-71' == a_tl_api.server
-    assert 'DEVKEY-71' == a_tl_api.devKey
-    assert 'PROXY-71' == a_tl_api.args['transport'].proxy
+    assert 'SERVER-URL-711' == a_tl_api.server
+    assert 'DEVKEY-711' == a_tl_api.devKey
+    assert 'PROXY-711' == a_tl_api.args['transport'].proxy
+
+def test_connect_with_proxy3(api_helper_class):
+    """ create a TestLink API dummy with ProxiedTransport - py3x"""
+    if not IS_PY3:
+        pytest.skip("py3 specific test")
+    
+    a_helper = api_helper_class('SERVER-URL-712', 'DEVKEY-712', 'https://PROXY-712:8080')
+    a_tl_api = a_helper.connect(DummyTestLinkAPI)
+    assert 'SERVER-URL-712' == a_tl_api.server
+    assert 'DEVKEY-712' == a_tl_api.devKey
+    assert ('https://proxy-712', 8080) == a_tl_api.args['transport'].proxy
     
 def test_connect_ignoring_proxy_env(api_helper_class, monkeypatch):
     """ create a TestLink API dummy ignoring PROXY env - pullRequest #121 """

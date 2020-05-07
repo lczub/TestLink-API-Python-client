@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2018-2019 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2018-2020 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import pytest
 #from conftest import api_general_client, api_generic_client
 
 def test_IS_PY3_same_state():
-    from testlink.proxiedtransport import IS_PY3 as proxie_is_py3
+    from testlink.testlinkhelper import IS_PY3 as proxie_is_py3
     from testlink.testlinkapigeneric import IS_PY3 as tl_is_py3
     assert proxie_is_py3 == tl_is_py3
     
