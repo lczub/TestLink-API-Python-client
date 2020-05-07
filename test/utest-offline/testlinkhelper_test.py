@@ -169,11 +169,11 @@ def test_connect_with_proxy2(api_helper_class):
     if IS_PY3:
         pytest.skip("py27 specific test")
 
-    a_helper = api_helper_class('SERVER-URL-711', 'DEVKEY-711', 'PROXY-71:8080')
+    a_helper = api_helper_class('SERVER-URL-711', 'DEVKEY-711', 'PROXY-711:8080')
     a_tl_api = a_helper.connect(DummyTestLinkAPI)
     assert 'SERVER-URL-711' == a_tl_api.server
     assert 'DEVKEY-711' == a_tl_api.devKey
-    assert 'PROXY-711' == a_tl_api.args['transport'].proxy
+    assert 'PROXY-711:8080' == a_tl_api.args['transport'].proxy
 
 def test_connect_with_proxy3(api_helper_class):
     """ create a TestLink API dummy with ProxiedTransport - py3x"""
