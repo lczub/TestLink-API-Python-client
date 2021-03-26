@@ -7,3 +7,4 @@ build/
 *.pyc
 dist/
 MANIFEST
+.pytest_cache/

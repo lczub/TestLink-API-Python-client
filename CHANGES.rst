@@ -666,20 +666,20 @@ helper method .whatArgs(apiMethodName) #8
 
 The Teslink API Client can now be asked, what arguments a API method expects::
 
-	import testlink
-	tlh = testlink.TestLinkHelper()
-	tls = tlh.connect(testlink.TestlinkAPIClient)
-	print tls.whatArgs('createTestPlan')
-	createTestPlan(<testplanname>, <testprojectname>, [note=<note>], [active=<active>], [public=<public>], [devKey=<devKey>])
-	 create a test plan 
+  import testlink
+  tlh = testlink.TestLinkHelper()
+  tls = tlh.connect(testlink.TestlinkAPIClient)
+  print tls.whatArgs('createTestPlan')
+  createTestPlan(<testplanname>, <testprojectname>, [note=<note>], [active=<active>], [public=<public>], [devKey=<devKey>])
+   create a test plan 
 
 or for a description of all implemented api method ::
 
-	import testlink
-	tlh = testlink.TestLinkHelper()
-	tls = tlh.connect(testlink.TestlinkAPIClient)
-	for m in testlink.testlinkargs._apiMethodsArgs.keys():
-		print tls.whatArgs(m), '\n'
+  import testlink
+  tlh = testlink.TestLinkHelper()
+  tls = tlh.connect(testlink.TestlinkAPIClient)
+  for m in testlink.testlinkargs._apiMethodsArgs.keys():
+    print tls.whatArgs(m), '\n'
 
 other changes
 ~~~~~~~~~~~~~
