@@ -2136,7 +2136,10 @@ TL version >= 1.9.11
             else:
                 raise testlinkerrors.TLArgError(
                                 'invalid attachment file: %s' % attachmentfile)
-                
+        finally:
+            # ensure file open inside this method call is closed again
+            if not already_file_obj:
+                a_file_obj.close()
             
         return {'filename':os.path.basename(a_file_path),
                 'filetype':guess_type(a_file_path)[0],
