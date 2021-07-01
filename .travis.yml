@@ -1,9 +1,7 @@
 sudo: false
 language: python
 python:
-  - "2.7"
-  - "3.6"
-  - "3.7"
+  - "3.9"
 
   # command to install dependencies
 install:
@@ -12,7 +10,7 @@ install:
 # command to run tests
 # online tests uses TL connection, defined in 
 #  TESTLINK_API_PYTHON_DEVKEY and TESTLINK_API_PYTHON_SERVER_URL
-#  see https://travis-ci.org/USER/TestLink-API-Python-client/settings/env_vars
+#  see https://travis-ci.com/USER/TestLink-API-Python-client/settings/env_vars
 # suggestion: use TL demo project with user pyTLapi, see tox.ini
 script: 
   - py.test test/utest-offline
