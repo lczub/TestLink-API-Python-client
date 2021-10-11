@@ -1,6 +1,23 @@
 Changes in TestLink-API-Python-client Source Distribution
 =========================================================
 
+TestLink-API-Python-client v0.8.2 (under develop)
+------------------------------------------------
+support for TL 1.9.20_fixed changes and py39
+
+main topic is to support TL 1.9.20_fixed api changes
+
+implement 1.9.20_fixed changed api interfaces - #139
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+changed TestlinkAPIGeneric and TestlinkAPIClient api methods
+
+- createPlatform() is adapted to support new optional boolean arguments 
+  <platformondesign> and <platformonexecution>
+  - When they are not set to <True>, assignTestCaseExecutionTask() might fail 
+    with an error like
+  - TLResponseError: 3041: Test plan (name:TestPlan_API A) has no platforms linked
+
 TestLink-API-Python-client v0.8.1-fix131 (Mar. 2020)
 ------------------------------------------------------------
 

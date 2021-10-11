@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2011-2019 Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2011-2021 Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -194,7 +194,8 @@ print("New Test Plan '%s' - id: %s" % (NEWTESTPLAN_B,newTestPlanID_B))
 
 # Create platform 'Big Birds x' 
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_A, 
-        notes='Platform for Big Birds, unique name, only used in this project')
+        notes='Platform for Big Birds, unique name, only used in this project',
+        platformondesign=True, platformonexecution=True)
 print("createPlatform", newPlatForm)
 newPlatFormID_A = newPlatForm['id']
 # Add Platform  'Big Bird x' to platform 
@@ -203,7 +204,8 @@ print("addPlatformToTestPlan", response)
 
 # Create platform 'Small Birds'
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_B, 
-                notes='Platform for Small Birds, name used in all example projects')
+        notes='Platform for Small Birds, name used in all example projects',
+        platformondesign=True, platformonexecution=True)
 print("createPlatform", newPlatForm)
 newPlatFormID_B = newPlatForm['id']
 # Add Platform  'Small Bird' to platform 
@@ -212,7 +214,8 @@ print("addPlatformToTestPlan", response)
 
 # Create platform 'Ugly Birds'
 newPlatForm = myTestLink.createPlatform(NEWPROJECT, NEWPLATFORM_C, 
-                notes='Platform for Ugly Birds, will be removed from test plan')
+            notes='Platform for Ugly Birds, will be removed from test plan',
+            platformondesign=True, platformonexecution=True)
 print("createPlatform", newPlatForm)
 newPlatFormID_C = newPlatForm['id']
 # Add Platform  'Ugly Bird' to platform 

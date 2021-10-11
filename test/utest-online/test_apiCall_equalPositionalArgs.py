@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2013-2019 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2013-2021 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -192,7 +192,9 @@ def test_getTotalsForTestPlan_unknownID(api_client):
 def test_createPlatform_unknownID(api_client):
     with pytest.raises(TLResponseError, match='7011.*40000711'):
         api_client.createPlatform('Project 40000711', 'Platform 40000712', 
-                                   notes='note 40000713')
+                                   notes='note 40000713',
+                                   platformondesign=True,
+                                   platformonexecution=True)
           
 def test_addPlatformToTestPlan_unknownID(api_client):
     with pytest.raises(TLResponseError, match='3000.*40000711'):

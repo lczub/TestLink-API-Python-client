@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2018-2019 Luiko Czub, TestLink-API-Python-client developers
+#  Copyright 2018-2021 Luiko Czub, TestLink-API-Python-client developers
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -109,8 +109,10 @@ test_data_apiCall_descriptions_equal_all = [
                                'title=<title>', 'description=<description>',
                                'filename=<filename>', 'filetype=<filetype>',
                                'content=<content>']),
+    ('createPlatform',['<testprojectname>,', '<platformname>,', 'notes=<notes>', 
+                       'platformondesign=<platformondesign>', 
+                       'platformonexecution=<platformonexecution>']),
     ('closeBuild', ['<buildid>'])
-
     ]
 
 @pytest.mark.parametrize("apiCall, descriptions", 

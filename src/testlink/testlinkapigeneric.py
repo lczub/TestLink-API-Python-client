@@ -1214,10 +1214,25 @@ TL version >= 1.9.11
     @decoMakerApiCallWithArgs(['testplanid'])
     def getExecCountersByBuild(self):
         """ Gets execution metrics information for a testplan """
-
+    # /**
+    #  * create platform
+    #  *
+    #  * @param struct $args
+    #  * @param string $args["devKey"]
+    #  * @param string $args["testprojectname"]
+    #  * @param string $args["platformname"]
+    #  * @param string $args["notes"]
+    #  * @param boolean $args["platformondesign"]
+    #  * @param boolean $args["platformonexecution"]
+    #  * @return mixed $resultInfo
+    #  * @internal revisions
+    #  */
+    # public function createPlatform($args) {
+   
     @decoApiCallAddDevKey               
     @decoMakerApiCallWithArgs(['testprojectname', 'platformname'], 
-                              ['notes'])
+                              ['notes', 
+                               'platformondesign', 'platformonexecution'])
     def createPlatform(self):
         """ Creates a platform for test project """
 

@@ -1,7 +1,7 @@
 TestLink API Python Client
 ==========================
 
-Copyright 2011-2019 
+Copyright 2011-2021 
 James Stock, Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
 
 License `Apache License 2.0`_
@@ -93,7 +93,7 @@ TestLink-API-Python-client developers
 -------------------------------------
 *   `James Stock`_, `Olivier Renault`_, `lczub`_, `manojklm`_ (PY3)
 *   `g4l4drim`_, `pade`_, `anton-matosov`_, `citizen-stig`_, `charz`_, `Maberi`_
-*   `Brian-Williams`_, `alexei-drozdov`_, `janLo`_, `heuj`_
+*   `Brian-Williams`_, `alexei-drozdov`_, `janLo`_, `heuj`_, `elapfra`_
 *   anyone forgotten?
 
 .. _Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
@@ -122,3 +122,4 @@ TestLink-API-Python-client developers
 .. _alexei-drozdov: https://github.com/alexei-drozdov/TestLink-API-Python-client
 .. _janLo: https://github.com/janLo/TestLink-API-Python-client
 .. _heuj: https://github.com/heuj/TestLink-API-Python-client
+.. _elapfra: https://github.com/elapfra/TestLink-API-Python-client
