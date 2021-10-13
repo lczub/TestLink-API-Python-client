@@ -202,7 +202,8 @@ class AddPlatformReporter(TestReporter):
             except TLResponseError as e:
                 if int(e.code) == 235:
                     self.tls.createPlatform(self.testprojectname, pn_kwarg,
-                                            notes=self.platformnotes)
+                                            notes=self.platformnotes,
+                                            platformondesign=True, platformonexecution=True)
                     self.tls.addPlatformToTestPlan(self.testplanid, pn_kwarg)
                     self._platformname_generated = True
                 else:
