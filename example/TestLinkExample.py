@@ -429,20 +429,26 @@ newResult = myTestLink.reportTCResult(newTestCaseID_B, newTestPlanID_A, NEWBUILD
 print("reportTCResult", newResult) 
 newResultID_B = newResult[0]['id']
 
-# add this (text) file as Attachemnt to last execution of TC_B  with 
-# different filename 'MyPyExampleApiClient.py'
-a_file=open(NEWATTACHMENT_PY)
-newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_B, 
-            'Textfile Example', 'Text Attachment Example for a TestCase Execution',
-            filename='MyPyExampleApiClient.py')
-print("uploadExecutionAttachment", newAttachment)
-# add png file as Attachemnt to last execution of TC_AA
-# !Attention - on WINDOWS use binary mode for none text file
-# see http://docs.python.org/2/tutorial/inputoutput.html#reading-and-writing-files
-a_file=open(NEWATTACHMENT_PNG, mode='rb')
-newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_AA, 
-            'PNG Example', 'PNG Attachment Example for a TestCase Execution')
-print("uploadExecutionAttachment", newAttachment)
+#FIXME: know 1.9.20_fixed issue 
+# testlink.testlinkerrors.TLResponseError: 6002: (uploadExecutionAttachment) - Error inserting attachment on DB
+#
+# E_WARNING base64_decode() expects parameter 1 to be string, array given 
+# - in /var/www/html/lib/api/xmlrpc/v1/xmlrpc.class.php - Line 5834
+#
+# # add this (text) file as Attachemnt to last execution of TC_B  with 
+# # different filename 'MyPyExampleApiClient.py'
+# a_file=open(NEWATTACHMENT_PY)
+# newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_B, 
+#             'Textfile Example', 'Text Attachment Example for a TestCase Execution',
+#             filename='MyPyExampleApiClient.py')
+# print("uploadExecutionAttachment", newAttachment)
+# # add png file as Attachemnt to last execution of TC_AA
+# # !Attention - on WINDOWS use binary mode for none text file
+# # see http://docs.python.org/2/tutorial/inputoutput.html#reading-and-writing-files
+# a_file=open(NEWATTACHMENT_PNG, mode='rb')
+# newAttachment = myTestLink.uploadExecutionAttachment(a_file, newResultID_AA, 
+#             'PNG Example', 'PNG Attachment Example for a TestCase Execution')
+# print("uploadExecutionAttachment", newAttachment)
 
 # -- Create Build for TestPlan B (uses no platforms)
 newBuild = myTestLink.createBuild(newTestPlanID_B, NEWBUILD_B, 
@@ -559,10 +565,17 @@ newResult = myTestLink.reportTCResult(newTestCaseID_AA, newTestPlanID_C,
                                       platformname=NEWPLATFORM_C)
 print("reportTCResult", newResult)
 newResultID_B = newResult[0]['id']
-newAttachment = myTestLink.uploadExecutionAttachment(NEWATTACHMENT_PY, newResultID_B, 
-        'Textfile Example', 'Attachment Example for a TC Execution and TP delete test',
-        filename='MyPyTPDeleteTest.py')
-print("uploadExecutionAttachment", newAttachment)
+
+#FIXME: know 1.9.20_fixed issue 
+# testlink.testlinkerrors.TLResponseError: 6002: (uploadExecutionAttachment) - Error inserting attachment on DB
+#
+# E_WARNING base64_decode() expects parameter 1 to be string, array given 
+# - in /var/www/html/lib/api/xmlrpc/v1/xmlrpc.class.php - Line 5834
+#
+# newAttachment = myTestLink.uploadExecutionAttachment(NEWATTACHMENT_PY, newResultID_B, 
+#         'Textfile Example', 'Attachment Example for a TC Execution and TP delete test',
+#         filename='MyPyTPDeleteTest.py')
+# print("uploadExecutionAttachment", newAttachment)
 response = myTestLink.getTotalsForTestPlan(newTestPlanID_C)
 print("getTotalsForTestPlan before delete", response)
 response = myTestLink.deleteTestPlan(newTestPlanID_C)
