@@ -725,31 +725,35 @@ print('getTestCaseByVersion v2', response)
 response = myTestLink.getTestCaseByVersion(newTestCaseID_B)
 print('getTestCaseByVersion vNone', response)
 
-# add png file as Attachment to test case B version 1
-a_file=open(NEWATTACHMENT_PNG, mode='rb')
-newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 1,
-            title='PNG Example v1', description='PNG Attachment Example for a TestCase v1')
-print("uploadTestCaseAttachment v1", newAttachment)
-# add py file as Attachment to test case B version 2
-a_file=open(NEWATTACHMENT_PY, mode='rb')
-newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 2,
-            title='Textfile Example v2', description='Text Attachment Example for a TestCase v2')
-print("uploadTestCaseAttachment v2", newAttachment)
-
-# get Attachment of test case B v1
-# response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
-# print "getTestCaseAttachments", response
-response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=1)
-print("getTestCaseAttachments v1", response)
-
-# get Attachment of test case B - last version
-# response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
-# print "getTestCaseAttachments", response
-response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=2)
-attachment_id = list(response)[0]
-print("getTestCaseAttachments v2", response[attachment_id]['title'])
-response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
-print("getTestCaseAttachments vNone", response[attachment_id]['name'])
+#FIXME: know 1.9.19 issue 
+# E_WARNING base64_decode() expects parameter 1 to be string, array given 
+# - in /var/www/html/lib/api/xmlrpc/v1/xmlrpc.class.php - Line 5103
+#
+# # add png file as Attachment to test case B version 1
+# a_file=open(NEWATTACHMENT_PNG, mode='rb')
+# newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 1,
+#             title='PNG Example v1', description='PNG Attachment Example for a TestCase v1')
+# print("uploadTestCaseAttachment v1", newAttachment)
+# # add py file as Attachment to test case B version 2
+# a_file=open(NEWATTACHMENT_PY, mode='rb')
+# newAttachment = myTestLink.uploadTestCaseAttachment(a_file, newTestCaseID_B, 2,
+#             title='Textfile Example v2', description='Text Attachment Example for a TestCase v2')
+# print("uploadTestCaseAttachment v2", newAttachment)
+#
+# # get Attachment of test case B v1
+# # response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
+# # print "getTestCaseAttachments", response
+# response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=1)
+# print("getTestCaseAttachments v1", response)
+#
+# # get Attachment of test case B - last version
+# # response = myTestLink.getTestCaseAttachments(testcaseexternalid=tc_aa_full_ext_id)
+# # print "getTestCaseAttachments", response
+# response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B, version=2)
+# attachment_id = list(response)[0]
+# print("getTestCaseAttachments v2", response[attachment_id]['title'])
+# response = myTestLink.getTestCaseAttachments(testcaseid=newTestCaseID_B)
+# print("getTestCaseAttachments vNone", response[attachment_id]['name'])
 
 
 # copy test case - as new TC in a different TestSuite
