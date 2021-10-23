@@ -469,6 +469,10 @@ def test_closeBuild_unknownID(api_client):
     with pytest.raises(TLResponseError, match='4000.*40000713'):
         api_client.closeBuild(40000713)
 
+def test_createUser_invalidMail(api_client):
+    with pytest.raises(TLResponseError, match='14003: Email.*seems no good'):
+        api_client.createUser('myLogin','myFname','myLname', 'myInvalidMail')
+
 
 # if __name__ == "__main__":
 # #import sys;sys.argv = ['', 'Test.testName']

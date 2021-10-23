@@ -107,9 +107,33 @@ ITSNAME="myITS"
 print(myTestLink.connectionInfo())
 print("")
 
-# CHANGE this name into a valid account, known in your TL application
-myTestUserName="pyTLapi"
-myTestUserName2="admin"
+def checkUser(name1, name2):
+    """ checks if user NAME1_NAME2 exists
+        when not , user will be created
+              returns username + userid
+    """
+    
+    login = "{}_{}".format(name1, name2)
+    mail = "{}.{}@example.com".format(name1, name2)
+    try:
+        response = myTestLink.getUserByLogin(login)
+        userID = response[0]['dbID']
+    except TLResponseError as tl_err:
+        if tl_err.code == 10000:
+            # Cannot Find User Login - create new user
+            userID = myTestLink.createUser(login, name1, name2, mail)
+        else:
+            # seems to be another response failure -  we forward it
+            raise   
+
+    return login, userID
+    
+# ensure tester and expert users exists
+myTestUserName, myTestUser1_ID=checkUser("myTester", "pyTLapi")
+print("checkUser", myTestUserName, myTestUser1_ID)
+myTestUserName2, myTestUser2_ID=checkUser("myExpert", "pyTLapi")
+print("checkUser", myTestUserName2, myTestUser2_ID)
+
 # get user information
 response = myTestLink.getUserByLogin(myTestUserName)
 print("getUserByLogin", response)
@@ -119,7 +143,6 @@ print("getUserByID   ", response)
 
 # example asking the api client about methods arguments
 print(myTestLink.whatArgs('createTestCase'))
-
 
 # example handling Response Error Codes
 # first check an invalid devKey and than the own one

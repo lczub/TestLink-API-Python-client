@@ -2068,6 +2068,32 @@ TL version >= 1.9.11
                                   values 0 (false = default) or 1 (true)   
         """
   
+    # /**
+    #  * Create a new user
+    #  *
+    #  * Restricted to site admin
+    #  *
+    #  * @param struct $args
+    #  * @param string $args["devKey"]
+    #  * @param string $args["login"]
+    #  * @param string $args["firstname"]
+    #  * @param string $args["lastname"]
+    #  * @param string $args["email"]
+    #  * @param string $args["password"] - OPTIONAL
+    #  *               
+    #  *
+    #  * @return ID the new user if OK, otherwise error structure
+    #  *
+    #  * @access public
+    #  */
+    # public function createUser($args) {
+    @decoApiCallAddDevKey
+    @decoMakerApiCallWithArgs(['login', 'firstname', 'lastname', 'email'],
+                        ['password'])
+    def createUser(self):
+        """ Create a new user """
+
+  
     #
     #  internal methods for general server calls
     #                                   
