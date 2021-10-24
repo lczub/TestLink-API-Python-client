@@ -21,7 +21,7 @@
 
 from __future__ import print_function
 from .testlinkapigeneric import TestlinkAPIGeneric, TestLinkHelper
-from .testlinkerrors import TLArgError
+from .testlinkerrors import TLArgError, TLResponseError
 import sys
 
 
@@ -512,6 +512,36 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
                 result = project['id']
                 break
         return result
+    
+    def ensureUserExist(self, login, **userArgs):
+        """ combines getUserByLogin() + createUser()
+            creates new user only, when login not exist
+            
+            returns userID 
+            
+            userArgs defines optional key value pairs used to create new user
+            - firstname Default 'unknown'
+            - lastname  Default 'via pyTLapi'
+            - email      Default 'unknown@example.com'
+            - password  Default None
+        """
+        
+        try:
+            response = self.getUserByLogin(login)
+            userID = response[0]['dbID']
+        except TLResponseError as tl_err:
+            if tl_err.code == 10000:
+                # Cannot Find User Login create new user
+                name1 = userArgs.get('firstname', 'unknown')
+                name2 = userArgs.get('lastname', 'via pyTLapi')
+                mail  = userArgs.get('email', 'unknown@example.com')
+                pw    = userArgs.get('password')
+                userID = self.createUser(login, name1, name2, mail, password=pw)
+            else:
+                # seems to be another response failure -  we forward it
+                raise   
+    
+        return userID
 
     
 if __name__ == "__main__":

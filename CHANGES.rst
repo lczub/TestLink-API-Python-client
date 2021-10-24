@@ -7,6 +7,18 @@ support for TL 1.9.20_fixed changes and py39
 
 main topic is to support TL 1.9.20_fixed api changes
 
+implement 1.9.20_fixed new api interfaces - #141
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+new TestlinkAPIGeneric and TestlinkAPIClient api method
+
+- createUser(<login>, <firstname>, <lastname>, <email>, [password=<password>])
+
+new TestlinkAPIClient helper method
+
+- ensureUserExist(<login>, [firstname=<firstname>], [lastname=<lastname>], 
+  [email=<email>, [password=<password>])
+
 implement 1.9.20_fixed changed api interfaces - #139
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

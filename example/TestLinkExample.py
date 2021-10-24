@@ -121,9 +121,16 @@ ITSNAME="myITS"
 print(myTestLink.connectionInfo())
 print("")
 
-# CHANGE this name into a valid account, known in your TL application
-myTestUserName="pyTLapi"
-myTestUserName2="admin"
+# ensure tester and expert users exists
+myTestUserName="myTester"
+myTestUser1_ID=myTestLink.ensureUserExist(myTestUserName, 
+    firstname="myFirstName", lastname="myLastName", mail="myTester@example.com")
+print("ensureUserExist", myTestUserName, myTestUser1_ID)
+
+myTestUserName2="myExpert"
+myTestUser2_ID=myTestLink.ensureUserExist(myTestUserName2)
+print("checkUser", myTestUserName2, myTestUser2_ID)
+
 # get user information
 response = myTestLink.getUserByLogin(myTestUserName)
 print("getUserByLogin", response)
