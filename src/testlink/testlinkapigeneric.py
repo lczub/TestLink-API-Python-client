@@ -2093,6 +2093,27 @@ TL version >= 1.9.11
     def createUser(self):
         """ Create a new user """
 
+    # /**
+    #  * Set a role to a user at project level
+    #  *
+    #  * Restricted to users with System Wide Role Admin
+    #  *
+    #  * @param struct $args
+    #  * @param struct $args["userid"]
+    #  * @param struct $args["rolename"]
+    #  * @param struct $args["testprojectid"]
+    #  *
+    #  * @return true if OK, otherwise error structure
+    #  *
+    #  * @access public
+    #  */
+    # public function setUserRoleOnProject($args)
+    @decoApiCallAddDevKey
+    @decoMakerApiCallWithArgs(['userid', 'rolename', 'testprojectid'])
+    def setUserRoleOnProject(self):
+        """ Set a role to a user at project level 
+            Restricted to users with System Wide Role Admin
+        """
   
     #
     #  internal methods for general server calls

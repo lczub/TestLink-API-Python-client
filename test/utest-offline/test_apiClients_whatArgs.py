@@ -114,7 +114,8 @@ test_data_apiCall_descriptions_equal_all = [
                        'platformonexecution=<platformonexecution>']),
     ('closeBuild', ['<buildid>']),
     ('createUser', ['<login>', '<firstname>', '<lastname>', '<email>', 
-                    'password=<password>'])
+                    'password=<password>']),
+    ('setUserRoleOnProject', ['<userid>', '<rolename>', '<testprojectid>'])
     ]
 
 @pytest.mark.parametrize("apiCall, descriptions", 

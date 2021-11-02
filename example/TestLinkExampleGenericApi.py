@@ -185,6 +185,20 @@ newProject = myTestLink.createTestProject(NEWPROJECT, NEWPREFIX,
 print("createTestProject", newProject)
 newProjectID = newProject[0]['id'] 
 print("New Project '%s' - id: %s" % (NEWPROJECT,newProjectID))
+
+# assign project roles to user
+response = myTestLink.setUserRoleOnProject(myTestUser1_ID, "tester", newProjectID)
+print("setUserRoleOnProject user1", response)
+response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "senior tester", newProjectID)
+print("setUserRoleOnProject user2 role a", response)
+response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "test designer", newProjectID)
+print("setUserRoleOnProject user2 role b", response)
+# get user information
+response = myTestLink.getUserByID(myTestUser1_ID)
+print("getUserByID user1", response)
+response = myTestLink.getUserByID(myTestUser2_ID)
+print("getUserByID user2", response)
+
  
 # Create test plan A  - uses platforms
 newTestPlan = myTestLink.createTestPlan(NEWTESTPLAN_A, testprojectname=NEWPROJECT,
