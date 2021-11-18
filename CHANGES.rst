@@ -10,14 +10,17 @@ main topic is to support TL 1.9.20_fixed api changes
 implement 1.9.20_fixed new api interfaces - #141
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-new TestlinkAPIGeneric and TestlinkAPIClient api method
+new TestlinkAPIGeneric and TestlinkAPIClient api methods
 
 - createUser(<login>, <firstname>, <lastname>, <email>, [password=<password>])
+- setUserRoleOnProject(<userid>, <rolename>, <testprojectid>)
 
-new TestlinkAPIClient helper method
+new TestlinkAPIClient service methods
 
 - ensureUserExist(<login>, [firstname=<firstname>], [lastname=<lastname>], 
   [email=<email>, [password=<password>])
+- ensureUserExistWithProjectRole(<login>, <rolename>, <projectname>, 
+  [firstname=<firstname>], [lastname=<lastname>], [email=<email>, [password=<password>])
 
 implement 1.9.20_fixed changed api interfaces - #139
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

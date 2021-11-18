@@ -504,14 +504,14 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
         """ reset .stepsList to an empty List """
         self.stepsList = []            
                                         
-    def getProjectIDByName(self, projectName):   
-        projects=self.getProjects()
-        result=-1
-        for project in projects:
-            if (project['name'] == projectName): 
-                result = project['id']
-                break
-        return result
+    def getProjectIDByName(self, projectName):
+        try:
+            project=self.getTestProjectByName(projectName)
+            userID = project['id']
+        except KeyError:
+            userID = -1
+            
+        return userID
     
     def ensureUserExist(self, login, **userArgs):
         """ combines getUserByLogin() + createUser()
@@ -543,6 +543,26 @@ class TestlinkAPIClient(TestlinkAPIGeneric):
     
         return userID
 
+    def ensureUserExistWithProjectRole(self, login, rolename, projectname, **userArgs):
+        """ combines ensureUserExist() + setUserRoleOnProject()
+            creates new user only, when login not exist
+            
+            returns list with users account details 
+            
+            rolename
+            - e.g. tester, test designer, senior tester, guest ...
+            
+            userArgs defines optional key value pairs used to create new user
+            - firstname Default 'unknown'
+            - lastname  Default 'via pyTLapi'
+            - email      Default 'unknown@example.com'
+            - password  Default None
+        """
+        
+        userID = self.ensureUserExist(login, **userArgs)
+        projectID = self.getProjectIDByName(projectname)
+        self.setUserRoleOnProject(userID, rolename, projectID)
+        return self.getUserByID(userID)
     
 if __name__ == "__main__":
     tl_helper = TestLinkHelper()

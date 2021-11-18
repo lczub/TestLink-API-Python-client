@@ -184,6 +184,16 @@ print("createTestProject", newProject)
 newProjectID = newProject[0]['id']
 print("New Project '%s' - id: %s" % (NEWPROJECT,newProjectID))
 
+# assign project roles to user 1 and get user information
+response = myTestLink.ensureUserExistWithProjectRole(myTestUserName, "tester", NEWPROJECT)
+print("ensureUserExistWithProjectRole user1 role tester", response)
+
+# assign project roles to user 2 and get user information
+response = myTestLink.ensureUserExistWithProjectRole(myTestUserName2, "senior tester", NEWPROJECT)
+print("ensureUserExistWithProjectRole user2 role senior tester", response)
+response = myTestLink.ensureUserExistWithProjectRole(myTestUserName2, "test designer", NEWPROJECT)
+print("ensureUserExistWithProjectRole user2 role test designer", response)
+
 # Creates the test plan
 newTestPlan = myTestLink.createTestPlan(NEWTESTPLAN_A, testprojectname=NEWPROJECT,
             notes='New TestPlan created with the API',active=1, public=1)    

@@ -186,16 +186,19 @@ print("createTestProject", newProject)
 newProjectID = newProject[0]['id'] 
 print("New Project '%s' - id: %s" % (NEWPROJECT,newProjectID))
 
-# assign project roles to user
+# assign project roles to user 1 and get user information
 response = myTestLink.setUserRoleOnProject(myTestUser1_ID, "tester", newProjectID)
-print("setUserRoleOnProject user1", response)
-response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "senior tester", newProjectID)
-print("setUserRoleOnProject user2 role a", response)
-response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "test designer", newProjectID)
-print("setUserRoleOnProject user2 role b", response)
-# get user information
+print("setUserRoleOnProject user1 role tester", response)
 response = myTestLink.getUserByID(myTestUser1_ID)
 print("getUserByID user1", response)
+
+# assign project roles to user 2 and get user information
+response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "senior tester", newProjectID)
+print("setUserRoleOnProject user2 role senior tester", response)
+response = myTestLink.getUserByID(myTestUser2_ID)
+print("getUserByID user2", response)
+response = myTestLink.setUserRoleOnProject(myTestUser2_ID, "test designer", newProjectID)
+print("setUserRoleOnProject user2 role test designer", response)
 response = myTestLink.getUserByID(myTestUser2_ID)
 print("getUserByID user2", response)
 
