@@ -1,7 +1,7 @@
 TestLink API Python Client
 ==========================
 
-Copyright 2011-2021 
+Copyright 2011-2022 
 James Stock, Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
 
 License `Apache License 2.0`_
@@ -66,7 +66,7 @@ src/
     Source for TestLink API Python Client
 
 doc/
-    `Installation`_ and `Usage`_ documentation
+    `Installation`_ and `Usage (EN)`_ / `Usage (FR)`_ documentation
 
 examples/
     Examples, how to use `TestlinkAPIGeneric`_ and `TestlinkAPIClient`_.
@@ -94,7 +94,7 @@ TestLink-API-Python-client developers
 *   `James Stock`_, `Olivier Renault`_, `lczub`_, `manojklm`_ (PY3)
 *   `g4l4drim`_, `pade`_, `anton-matosov`_, `citizen-stig`_, `charz`_, `Maberi`_
 *   `Brian-Williams`_, `alexei-drozdov`_, `janLo`_, `heuj`_, `elapfra`_
-*   anyone forgotten?
+*   `Mikycid`_, anyone forgotten?
 
 .. _Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
 .. _TestLink: http://testlink.org
@@ -102,7 +102,8 @@ TestLink-API-Python-client developers
 .. _Robot Framework: http://code.google.com/p/robotframework
 .. _Jenkins: http://jenkins-ci.org
 .. _Installation: doc/install.rst
-.. _Usage: doc/usage.rst
+.. _Usage (EN): doc/usage.rst
+.. _Usage (FR): doc/fr_usage.rst
 .. _TestlinkAPIGeneric: example/TestLinkExampleGenericApi.py
 .. _TestlinkAPIClient: example/TestLinkExample.py
 .. _tox.ini: tox.ini
@@ -123,3 +124,4 @@ TestLink-API-Python-client developers
 .. _janLo: https://github.com/janLo/TestLink-API-Python-client
 .. _heuj: https://github.com/heuj/TestLink-API-Python-client
 .. _elapfra: https://github.com/elapfra/TestLink-API-Python-client
+.. _Mikycid: https://github.com/Mikycid/TestLink-API-Python-client
