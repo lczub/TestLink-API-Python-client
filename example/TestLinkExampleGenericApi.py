@@ -474,9 +474,10 @@ newResultID_B = newResult[0]['id']
 
 #FIXME: know 1.9.20_fixed issue 
 # testlink.testlinkerrors.TLResponseError: 6002: (uploadExecutionAttachment) - Error inserting attachment on DB
-#
-# E_WARNING base64_decode() expects parameter 1 to be string, array given 
-# - in /var/www/html/lib/api/xmlrpc/v1/xmlrpc.class.php - Line 5834
+# Fixed ! This issue it not really a bug but a lack of error message TestLink side not correctly raised !
+# This come from configuration $tlCfg->attachments->allowed_files = 'doc,xls,gif,png,jpg';
+# If you trying to upload a file with an not granted extention !
+# So check config.inc.php is correct and with that version currently (Oct 2024) this work !
 #
 # # add this python file as Attachemnt to last execution of TC_B with 
 # # different filename 'MyPyExampleApiGeneric.py'
