@@ -1,0 +1,41 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        },
+        {
+            "label": "test Testlink Api sample",
+            "type": "process",
+            "detail": "Run sample Testlink Api Python Client communication",
+            "command": "${config:python.defaultInterpreterPath}",
+            "args": [ "${workspaceFolder}/example/${input:apiSample}.py" ],
+            "group": "test",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": ["$python"],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {    "PYTHONPATH" : "./src",
+                            "TESTLINK_API_PYTHON_SERVER_URL" : "http://localhost:8085/lib/api/xmlrpc/v1/xmlrpc.php",
+                            "TESTLINK_API_PYTHON_DEVKEY"     : "48072c25257af9f477a22c97a3858337"
+                        }
+                }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "apiSample",
+            "description": "Which TL API sample to run ?",
+            "options": ["TestLinkExample", "TestLinkExampleGenericApi","TestLinkExample_CF_KW","TestLinkExampleGenericApi_Req"],
+            "default": "TestLinkExample"
+        }
+    ]
+}

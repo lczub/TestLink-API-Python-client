@@ -1,3 +1,0 @@
-[submodule "tl-pg-compose"]
-	path = tl-pg-compose
-	url = https://github.com/lczub/testlink-pg-compose.git
