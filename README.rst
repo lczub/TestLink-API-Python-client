@@ -6,12 +6,6 @@ James Stock, Olivier Renault, Luiko Czub, TestLink-API-Python-client developers
 
 License `Apache License 2.0`_
 
-.. image:: https://travis-ci.com/lczub/TestLink-API-Python-client.svg?branch=master
-    :target: https://travis-ci.com/lczub/TestLink-API-Python-client
-    
-.. contents::
-   :local:    
-
 Introduction
 ------------
 
